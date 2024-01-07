@@ -1,0 +1,6 @@
+# ignore compiled playdate games
+*.pdx
+# only store corresponding .aseprite in git, not their pngs
+*.png
+
+.DS_Store
