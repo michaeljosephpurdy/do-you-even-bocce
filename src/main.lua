@@ -2,11 +2,13 @@ import("CoreLibs/object")
 import("CoreLibs/graphics")
 import("CoreLibs/sprites")
 import("CoreLibs/timer")
+import("CoreLibs/ui")
 import("systems/sprite-manager")
 import("scenes/bocce-game")
 import("entities/base-entity")
 import("entities/ball")
 import("entities/player")
+import("entities/power-meter")
 
 local gfx <const> = playdate.graphics
 

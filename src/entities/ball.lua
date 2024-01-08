@@ -1,3 +1,6 @@
+local gfx <const> = playdate.graphics
+local vector2D <const> = playdate.geometry.vector2D
+
 class("Ball").extends(BaseEntity)
 class("JackBall").extends(Ball)
 class("WhiteBall").extends(Ball)
@@ -8,32 +11,21 @@ class("BlackGrayBall").extends(Ball)
 function Ball:init(x, y, dir_x, dir_y, power, spin)
 	Ball.super.init(self)
 	self:setImage(playdate.graphics.image.new("images/ball"))
-	self:moveTo(x or 0, y or 0)
-	dir_x = 1 --math.random()
-	dir_y = 1 --math.random()
-	local velocity_vector = playdate.geometry.vector2D.new(dir_x or 1, dir_y or 1)
-	velocity_vector:normalize()
-	self.vel_x = velocity_vector.dx * (power or 20)
-	self.vel_y = velocity_vector.dy * (power or 20)
-	self.friction_x = 0.90
-	self.friction_y = 0.90
+	self.position = vector2D.new(x or 0, y or 0)
+	local direction_vector = vector2D.new(dir_x, dir_y)
+	direction_vector:normalize()
+	self.velocity_vector = direction_vector * power
+
+	self.friction = 0.90
 	self.mass = 10
-	self.radius = 16
-	self:setCollideRect(2, 2, self.radius - 4, self.radius - 4)
+	self.radius = 8
+	self:setCollideRect(0, 0, self:getSize())
 end
 
 function Ball:update()
-	self.vel_x = self.vel_x * self.friction_x
-	self.vel_y = self.vel_y * self.friction_y
-	local x = self.x + self.vel_x
-	local y = self.y + self.vel_y
-	if self.vel_x <= 0.1 and self.vel_x >= -0.1 then
-		self.vel_x = 0
-	end
-	if self.vel_y <= 0.1 and self.vel_y >= -0.1 then
-		self.vel_y = 0
-	end
-	self:moveTo(x, y)
+	self.velocity_vector = self.velocity_vector * self.friction
+	self.position = self.position + self.velocity_vector
+	self:moveTo(self.position.x, self.position.y)
 	local others = self:overlappingSprites()
 	for _, other in pairs(others) do
 		if self:check_collision(other) then
@@ -52,10 +44,16 @@ function Ball:check_collision(other)
 end
 
 function Ball:collides_with(other)
-	self.vel_x = self.vel_x / 2
-	self.vel_y = self.vel_y / 2
-	other.vel_x = other.vel_x + self.vel_x
-	other.vel_y = other.vel_y + self.vel_y
+	local velocity_difference = other.velocity_vector - self.velocity_vector
+	local position_difference = other.position - self.position
+
+	local dot_product = velocity_difference:dotProduct(position_difference)
+	local impulse = (2 * dot_product) / (self.mass + other.mass)
+
+	position_difference:normalize()
+
+	self.velocity_vector = self.velocity_vector + position_difference * impulse * self.mass
+	other.velocity_vector = other.velocity_vector - position_difference * impulse * other.mass
 end
 
 function JackBall:init(x, y, dir_x, dir_y, power, spin)

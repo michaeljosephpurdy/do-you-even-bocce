@@ -9,6 +9,16 @@ function SpriteManager:init()
 end
 
 function SpriteManager:add(sprite)
+	-- if a sprite needs to be a singleton, then
+	-- whenever we add the sprite, let's also remove
+	-- whatever old instance of that sprite is laying around
+	if sprite.singleton then
+		for i, active_sprite in ipairs(self.active_sprites) do
+			if active_sprite.className == sprite.className then
+				self:remove(active_sprite, i)
+			end
+		end
+	end
 	table.insert(self.active_sprites, sprite)
 	if sprite:isa(sprite_class) then
 		sprite:add()
@@ -24,7 +34,16 @@ function SpriteManager:remove_all()
 	end
 end
 
-function SpriteManager:remove(entity)
+function SpriteManager:remove(entity, i)
+	-- if an index is passed in, just remove the sprite
+	-- don't worry about traversing the active_sprites table
+	if i then
+		if entity:isa(sprite_class) then
+			entity:remove()
+		end
+		table.remove(self.active_sprites, i)
+		return
+	end
 	for i, active_sprite in ipairs(self.active_sprites) do
 		if active_sprite == entity then
 			if active_sprite:isa(sprite_class) then
