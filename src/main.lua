@@ -1,3 +1,5 @@
+import("CoreLibs/animator")
+import("CoreLibs/easing")
 import("CoreLibs/object")
 import("CoreLibs/graphics")
 import("CoreLibs/sprites")
@@ -9,6 +11,7 @@ import("entities/base-entity")
 import("entities/ball")
 import("entities/player")
 import("entities/power-meter")
+import("entities/phase-overlay")
 
 local gfx <const> = playdate.graphics
 
@@ -21,11 +24,12 @@ end
 init()
 
 function playdate.update()
+	DELTA_TIME = playdate.getElapsedTime()
+	playdate.resetElapsedTime()
 	if playdate.buttonJustReleased(playdate.kButtonB) then
 		SpriteManagerSingleton:lazy_remove_all()
 	end
 	SpriteManagerSingleton:update()
-	playdate.resetElapsedTime()
 	gfx.sprite.update()
 	playdate.timer.updateTimers()
 end

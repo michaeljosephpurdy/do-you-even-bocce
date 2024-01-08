@@ -14,3 +14,6 @@ images:
 	aseprite -b assets/images/ball-white.aseprite --save-as src/images/ball-white.png
 	aseprite -b assets/images/ball-black-gray.aseprite --save-as src/images/ball-black-gray.png
 	aseprite -b assets/images/ball-white-gray.aseprite --save-as src/images/ball-white-gray.png
+	aseprite -b --layer "Position Phase" assets/images/phase-overlays.aseprite --save-as src/images/overlay-position-phase.png
+	aseprite -b --layer "Direction Phase" assets/images/phase-overlays.aseprite --save-as src/images/overlay-direction-phase.png
+	aseprite -b --layer "Power Phase" assets/images/phase-overlays.aseprite --save-as src/images/overlay-power-phase.png

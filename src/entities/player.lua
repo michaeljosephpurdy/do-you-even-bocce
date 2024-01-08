@@ -1,4 +1,5 @@
-class("Player").extends(playdate.graphics.sprite)
+local gfx <const> = playdate.graphics
+class("Player").extends(gfx.sprite)
 
 local STATES = {
 	WAITING_FOR_TURN = "WAITING_FOR_TURN",
@@ -11,14 +12,15 @@ local STATES = {
 Player.STATES = STATES
 function Player:init()
 	Player.super.init(self)
-	self:setImage(playdate.graphics.image.new("images/player"))
+	self:setImage(gfx.image.new("images/player-small"))
 	self:moveTo(20, 20)
 	self.state = STATES.INPUT_POSITION
+	self.overlay = DirectionPhaseOverlay()
 end
 
 function Player:reset()
 	self.direction = playdate.geometry.vector2D.newPolar(10, 0)
-	self.power = 20
+	self.power = 200
 	self.dir_x = 1
 	self.dir_y = 1
 end
@@ -44,6 +46,9 @@ function Player:update()
 			self:moveTo(self.x, self.y + 1)
 		end
 		if playdate.buttonJustReleased(playdate.kButtonA) then
+			SpriteManagerSingleton:remove(self.overlay)
+			self.overlay = DirectionPhaseOverlay()
+			SpriteManagerSingleton:add(self.overlay)
 			self:next_state(STATES.INPUT_DIRECTION)
 		end
 	elseif self.state == STATES.INPUT_DIRECTION then
@@ -56,13 +61,17 @@ function Player:update()
 		if playdate.buttonJustReleased(playdate.kButtonA) then
 			self:next_state(STATES.INPUT_POWER)
 			self.power_meter = PowerMeter()
+			SpriteManagerSingleton:remove(self.overlay)
+			self.overlay = PowerPhaseOverlay()
+			SpriteManagerSingleton:add(self.overlay)
 			SpriteManagerSingleton:add(self.power_meter)
 		end
 	elseif self.state == STATES.INPUT_POWER then
-		self.power = 20
 		if playdate.buttonJustReleased(playdate.kButtonA) then
+			self.power = self.power_meter:get_power()
 			self:next_state(STATES.READY_TO_THROW)
 			SpriteManagerSingleton:remove(self.power_meter)
+			SpriteManagerSingleton:remove(self.overlay)
 		end
 	elseif self.state == STATES.READY_TO_THROW then
 		self.direction:normalize()
@@ -70,5 +79,7 @@ function Player:update()
 		SpriteManagerSingleton:add(WhiteBall(self.x, self.y, dir_x, dir_y, self.power))
 		self:reset()
 		self:next_state(STATES.INPUT_POSITION)
+		self.overlay = PositionPhaseOverlay()
+		SpriteManagerSingleton:add(self.overlay)
 	end
 end

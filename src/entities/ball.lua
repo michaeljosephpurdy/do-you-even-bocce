@@ -1,5 +1,6 @@
 local gfx <const> = playdate.graphics
 local vector2D <const> = playdate.geometry.vector2D
+local zero_vector = vector2D.new(0, 0)
 
 class("Ball").extends(BaseEntity)
 class("JackBall").extends(Ball)
@@ -12,29 +13,33 @@ function Ball:init(x, y, dir_x, dir_y, power, spin)
 	Ball.super.init(self)
 	self:setImage(playdate.graphics.image.new("images/ball"))
 	self.position = vector2D.new(x or 0, y or 0)
+	self:moveTo(self.position.x, self.position.y)
 	local direction_vector = vector2D.new(dir_x, dir_y)
 	direction_vector:normalize()
 	self.velocity_vector = direction_vector * power
 
 	self.friction = 0.90
 	self.mass = 10
-	self.radius = 8
+	self.radius = 6
 	self:setCollideRect(0, 0, self:getSize())
 end
 
 function Ball:update()
 	self.velocity_vector = self.velocity_vector * self.friction
-	self.position = self.position + self.velocity_vector
+	if self.velocity_vector:magnitude() < 0.01 then
+		self.velocity_vector = zero_vector
+	end
+	self.position = self.position + self.velocity_vector * DELTA_TIME
 	self:moveTo(self.position.x, self.position.y)
 	local others = self:overlappingSprites()
 	for _, other in pairs(others) do
-		if self:check_collision(other) then
-			self:collides_with(other)
+		if self:check_collision_with_ball(other) then
+			self:collide_with_ball(other)
 		end
 	end
 end
 
-function Ball:check_collision(other)
+function Ball:check_collision_with_ball(other)
 	if not other:isa(Ball) then
 		return false
 	end
@@ -43,14 +48,13 @@ function Ball:check_collision(other)
 	return distance_squared <= max_distance * max_distance
 end
 
-function Ball:collides_with(other)
+function Ball:collide_with_ball(other)
 	local velocity_difference = other.velocity_vector - self.velocity_vector
 	local position_difference = other.position - self.position
+	position_difference:normalize()
 
 	local dot_product = velocity_difference:dotProduct(position_difference)
 	local impulse = (2 * dot_product) / (self.mass + other.mass)
-
-	position_difference:normalize()
 
 	self.velocity_vector = self.velocity_vector + position_difference * impulse * self.mass
 	other.velocity_vector = other.velocity_vector - position_difference * impulse * other.mass
@@ -60,9 +64,10 @@ function JackBall:init(x, y, dir_x, dir_y, power, spin)
 	JackBall.super.init(self, x, y, dir_x, dir_y, power, spin)
 	self:setImage(playdate.graphics.image.new("images/ball-jack"))
 	self.mass = 8
-	self.radius = 4
+	self.radius = 3
 	self:setCollideRect(0, 0, self:getSize())
 end
+
 function WhiteBall:init(x, y, dir_x, dir_y, power, spin)
 	WhiteBall.super.init(self, x, y, dir_x, dir_y, power, spin)
 	self:setImage(playdate.graphics.image.new("images/ball-white"))
