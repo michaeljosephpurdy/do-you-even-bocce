@@ -13,7 +13,7 @@ Player.STATES = STATES
 function Player:init()
 	Player.super.init(self)
 	self:setImage(gfx.image.new("images/player-small"))
-	self:moveTo(20, 20)
+	self:moveTo(40, 100)
 	self.state = STATES.INPUT_POSITION
 	self.overlay = DirectionPhaseOverlay()
 end
@@ -49,21 +49,20 @@ function Player:update()
 			SpriteManagerSingleton:remove(self.overlay)
 			self.overlay = DirectionPhaseOverlay()
 			SpriteManagerSingleton:add(self.overlay)
+			self.direction_meter = DirectionMeter(self.x, self.y, self.old_direction)
+			SpriteManagerSingleton:add(self.direction_meter)
 			self:next_state(STATES.INPUT_DIRECTION)
 		end
 	elseif self.state == STATES.INPUT_DIRECTION then
-		if playdate.isCrankDocked() then
-			playdate.ui.crankIndicator:draw()
-		else
-			local crank_position = playdate.getCrankPosition()
-			self.direction = playdate.geometry.vector2D.newPolar(10, crank_position)
-		end
 		if playdate.buttonJustReleased(playdate.kButtonA) then
-			self:next_state(STATES.INPUT_POWER)
-			self.power_meter = PowerMeter()
+			self.direction = self.direction_meter:get_direction()
+			self.old_direction = self.direction_meter.direction
 			SpriteManagerSingleton:remove(self.overlay)
+			SpriteManagerSingleton:remove(self.direction_meter)
 			self.overlay = PowerPhaseOverlay()
 			SpriteManagerSingleton:add(self.overlay)
+			self:next_state(STATES.INPUT_POWER)
+			self.power_meter = PowerMeter()
 			SpriteManagerSingleton:add(self.power_meter)
 		end
 	elseif self.state == STATES.INPUT_POWER then

@@ -5,13 +5,15 @@ import("CoreLibs/graphics")
 import("CoreLibs/sprites")
 import("CoreLibs/timer")
 import("CoreLibs/ui")
+import("entities/base-entity")
 import("systems/sprite-manager")
 import("scenes/bocce-game")
 import("entities/base-entity")
 import("entities/ball")
+import("entities/direction-meter")
+import("entities/phase-overlay")
 import("entities/player")
 import("entities/power-meter")
-import("entities/phase-overlay")
 
 local gfx <const> = playdate.graphics
 
