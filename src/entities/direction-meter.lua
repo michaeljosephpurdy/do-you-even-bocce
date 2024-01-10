@@ -28,8 +28,8 @@ function DirectionMeter:update()
 	end
 end
 
-function DirectionMeter:get_direction()
-	return playdate.geometry.vector2D.newPolar(10, self.direction)
+function DirectionMeter:get_value()
+	return playdate.geometry.vector2D.newPolar(10, self.direction), self.direction
 end
 
 function DirectionMeter:draw()

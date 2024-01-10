@@ -29,6 +29,10 @@ function SpinMeter:update()
 	end
 end
 
+function SpinMeter:get_value()
+	return self.animation:currentValue()
+end
+
 function SpinMeter:draw()
 	gfx.pushContext()
 	gfx.setLineWidth(self.arc_width)

@@ -18,3 +18,7 @@ function BaseMeter:init(player_x, player_y, starting_direction)
 		self.direction + self.arc_offset
 	)
 end
+
+function BaseMeter:get_value()
+	assert(nil, "BaseMeter.get_value must be overwritten in " .. self.className)
+end

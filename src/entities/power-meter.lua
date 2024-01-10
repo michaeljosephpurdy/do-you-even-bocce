@@ -24,7 +24,7 @@ function PowerMeter:update()
 	end
 end
 
-function PowerMeter:get_power()
+function PowerMeter:get_value()
 	return self.min_power + (self.animation:currentValue() * (self.max_power - self.min_power))
 end
 function PowerMeter:draw()

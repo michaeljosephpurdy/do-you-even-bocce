@@ -16,7 +16,9 @@ function Player:init()
 	self:setImage(gfx.image.new("images/player-small"))
 	self:moveTo(40, 100)
 	self.state = STATES.INPUT_POSITION
-	self.overlay = DirectionPhaseOverlay()
+	self.overlay = PositionPhaseOverlay()
+	self.position_meter = PositionMeter(self.x, self.y, self)
+	SpriteManagerSingleton:add(self.position_meter)
 end
 
 function Player:reset()
@@ -24,6 +26,7 @@ function Player:reset()
 	self.power = 200
 	self.dir_x = 1
 	self.dir_y = 1
+	self.spin = 0
 end
 
 function Player:next_state(new_state)
@@ -36,6 +39,11 @@ function Player:update()
 		return
 	end
 	if self.state == STATES.INPUT_POSITION then
+		if self.position_meter:player_out_of_bounds(self) then
+			print("out of bounds")
+		else
+			print("in bounds")
+		end
 		if playdate.buttonIsPressed(playdate.kButtonLeft) then
 			self:moveTo(self.x - 1, self.y)
 		elseif playdate.buttonIsPressed(playdate.kButtonRight) then
@@ -47,6 +55,7 @@ function Player:update()
 			self:moveTo(self.x, self.y + 1)
 		end
 		if playdate.buttonJustReleased(playdate.kButtonA) then
+			SpriteManagerSingleton:remove(self.position_meter)
 			SpriteManagerSingleton:remove(self.overlay)
 			self.overlay = DirectionPhaseOverlay()
 			SpriteManagerSingleton:add(self.overlay)
@@ -56,10 +65,9 @@ function Player:update()
 		end
 	elseif self.state == STATES.INPUT_DIRECTION then
 		if playdate.buttonJustReleased(playdate.kButtonA) then
-			self.direction = self.direction_meter:get_direction()
-			self.direction_degree = self.direction_meter.direction
-			SpriteManagerSingleton:remove(self.overlay)
+			self.direction, self.direction_degree = self.direction_meter:get_value()
 			SpriteManagerSingleton:remove(self.direction_meter)
+			SpriteManagerSingleton:remove(self.overlay)
 			self.overlay = SpinPhaseOverlay()
 			SpriteManagerSingleton:add(self.overlay)
 			self:next_state(STATES.INPUT_SPIN)
@@ -67,10 +75,10 @@ function Player:update()
 			SpriteManagerSingleton:add(self.spin_meter)
 		end
 	elseif self.state == STATES.INPUT_SPIN then
-		print("spin")
 		if playdate.buttonJustReleased(playdate.kButtonA) then
-			SpriteManagerSingleton:remove(self.spin_meter)
+			self.spin = self.spin_meter:get_value()
 			SpriteManagerSingleton:remove(self.overlay)
+			SpriteManagerSingleton:remove(self.spin_meter)
 			self.overlay = PowerPhaseOverlay()
 			SpriteManagerSingleton:add(self.overlay)
 			self:next_state(STATES.INPUT_POWER)
@@ -79,7 +87,7 @@ function Player:update()
 		end
 	elseif self.state == STATES.INPUT_POWER then
 		if playdate.buttonJustReleased(playdate.kButtonA) then
-			self.power = self.power_meter:get_power()
+			self.power = self.power_meter:get_value()
 			self:next_state(STATES.READY_TO_THROW)
 			SpriteManagerSingleton:remove(self.power_meter)
 			SpriteManagerSingleton:remove(self.overlay)
@@ -90,6 +98,8 @@ function Player:update()
 		SpriteManagerSingleton:add(WhiteBall(self.x, self.y, dir_x, dir_y, self.power))
 		self:reset()
 		self:next_state(STATES.INPUT_POSITION)
+		self.position_meter = PositionMeter(self.x, self.y, self)
+		SpriteManagerSingleton:add(self.position_meter)
 		self.overlay = PositionPhaseOverlay()
 		SpriteManagerSingleton:add(self.overlay)
 	end
