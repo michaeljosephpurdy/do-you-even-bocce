@@ -6,6 +6,7 @@ import("CoreLibs/sprites")
 import("CoreLibs/timer")
 import("CoreLibs/ui")
 import("entities/base-entity")
+import("entities/base-meter")
 import("systems/sprite-manager")
 import("scenes/bocce-game")
 import("entities/base-entity")
@@ -21,6 +22,8 @@ function init()
 	SpriteManagerSingleton = SpriteManager()
 	local player = Player()
 	player:add()
+	local jack_ball = JackBall(math.random(100, 380), math.random(50, 150))
+	SpriteManagerSingleton:add(jack_ball)
 end
 
 init()
@@ -30,8 +33,10 @@ function playdate.update()
 	playdate.resetElapsedTime()
 	if playdate.buttonJustReleased(playdate.kButtonB) then
 		SpriteManagerSingleton:lazy_remove_all()
+		SpriteManagerSingleton:add(JackBall(math.random(100, 400), math.random(50, 150)))
 	end
 	SpriteManagerSingleton:update()
 	gfx.sprite.update()
 	playdate.timer.updateTimers()
+	playdate.drawFPS(10, 220)
 end

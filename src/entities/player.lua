@@ -49,20 +49,20 @@ function Player:update()
 			SpriteManagerSingleton:remove(self.overlay)
 			self.overlay = DirectionPhaseOverlay()
 			SpriteManagerSingleton:add(self.overlay)
-			self.direction_meter = DirectionMeter(self.x, self.y, self.old_direction)
+			self.direction_meter = DirectionMeter(self.x, self.y, self.direction_degree)
 			SpriteManagerSingleton:add(self.direction_meter)
 			self:next_state(STATES.INPUT_DIRECTION)
 		end
 	elseif self.state == STATES.INPUT_DIRECTION then
 		if playdate.buttonJustReleased(playdate.kButtonA) then
 			self.direction = self.direction_meter:get_direction()
-			self.old_direction = self.direction_meter.direction
+			self.direction_degree = self.direction_meter.direction
 			SpriteManagerSingleton:remove(self.overlay)
 			SpriteManagerSingleton:remove(self.direction_meter)
 			self.overlay = PowerPhaseOverlay()
 			SpriteManagerSingleton:add(self.overlay)
 			self:next_state(STATES.INPUT_POWER)
-			self.power_meter = PowerMeter()
+			self.power_meter = PowerMeter(self.x, self.y, self.direction_degree)
 			SpriteManagerSingleton:add(self.power_meter)
 		end
 	elseif self.state == STATES.INPUT_POWER then
