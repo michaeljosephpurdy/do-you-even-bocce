@@ -11,10 +11,11 @@ import("systems/sprite-manager")
 import("scenes/bocce-game")
 import("entities/base-entity")
 import("entities/ball")
-import("entities/direction-meter")
 import("entities/phase-overlay")
-import("entities/player")
+import("entities/direction-meter")
 import("entities/power-meter")
+import("entities/spin-meter")
+import("entities/player")
 
 local gfx <const> = playdate.graphics
 

@@ -38,3 +38,9 @@ function PowerPhaseOverlay:init()
 	PowerPhaseOverlay.super.init(self)
 	self:setImage(gfx.image.new("images/overlay-power-phase"))
 end
+
+class("SpinPhaseOverlay").extends(PhaseOverlay)
+function SpinPhaseOverlay:init()
+	SpinPhaseOverlay.super.init(self)
+	self:setImage(gfx.image.new("images/overlay-spin-phase"))
+end

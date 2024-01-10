@@ -5,6 +5,7 @@ local STATES = {
 	WAITING_FOR_TURN = "WAITING_FOR_TURN",
 	INPUT_POSITION = "INPUT_POSITION",
 	INPUT_DIRECTION = "INPUT_DIRECTION",
+	INPUT_SPIN = "INPUT_SPIN",
 	INPUT_POWER = "INPUT_POWER",
 	READY_TO_THROW = "READY_TO_THROW",
 	THROWING = "THROWING",
@@ -59,6 +60,17 @@ function Player:update()
 			self.direction_degree = self.direction_meter.direction
 			SpriteManagerSingleton:remove(self.overlay)
 			SpriteManagerSingleton:remove(self.direction_meter)
+			self.overlay = SpinPhaseOverlay()
+			SpriteManagerSingleton:add(self.overlay)
+			self:next_state(STATES.INPUT_SPIN)
+			self.spin_meter = SpinMeter(self.x, self.y, self.direction_degree)
+			SpriteManagerSingleton:add(self.spin_meter)
+		end
+	elseif self.state == STATES.INPUT_SPIN then
+		print("spin")
+		if playdate.buttonJustReleased(playdate.kButtonA) then
+			SpriteManagerSingleton:remove(self.spin_meter)
+			SpriteManagerSingleton:remove(self.overlay)
 			self.overlay = PowerPhaseOverlay()
 			SpriteManagerSingleton:add(self.overlay)
 			self:next_state(STATES.INPUT_POWER)

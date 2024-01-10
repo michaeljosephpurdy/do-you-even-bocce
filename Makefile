@@ -18,3 +18,4 @@ images:
 	aseprite -b --layer "Position Phase" assets/images/phase-overlays.aseprite --save-as src/images/overlay-position-phase.png
 	aseprite -b --layer "Direction Phase" assets/images/phase-overlays.aseprite --save-as src/images/overlay-direction-phase.png
 	aseprite -b --layer "Power Phase" assets/images/phase-overlays.aseprite --save-as src/images/overlay-power-phase.png
+	aseprite -b --layer "Spin Phase" assets/images/phase-overlays.aseprite --save-as src/images/overlay-spin-phase.png
