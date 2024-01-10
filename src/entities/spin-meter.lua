@@ -7,30 +7,25 @@ function SpinMeter:init(player_x, player_y, starting_direction)
 	self.overlay_arc = self.arc:copy()
 	self.overlay_arc.startAngle = self.overlay_arc.startAngle - 1
 	self.overlay_arc.endAngle = self.overlay_arc.endAngle + 1
+	self.arc_offset = 2
 
-	self.arc_sway_distance = 2
-	self.animation = playdate.graphics.animator.new(
-		1500,
-		-self.arc_sway_distance,
-		self.arc_sway_distance,
-		playdate.easingFunctions.inOutBack
-	)
+	self.animation = playdate.graphics.animator.new(1500, 0, 1, playdate.easingFunctions.inOutBack)
 	self.animation.s = 0
 	self.animation.reverses = true
 	self.animation.loops = true
 end
 
 function SpinMeter:update()
-	local arc_offset = self.animation:currentValue()
-	self.arc.startAngle = self.arc.startAngle + arc_offset
-	self.arc.endAngle = self.arc.endAngle + arc_offset
+	local offset = (self.animation:currentValue() - 0.5) * self.arc_offset
+	self.arc.startAngle = self.arc.startAngle + offset
+	self.arc.endAngle = self.arc.endAngle + offset
 	if self.animation:ended() then
 		self.animation:reset()
 	end
 end
 
 function SpinMeter:get_value()
-	return self.animation:currentValue()
+	return (self.animation:currentValue() - 0.5) * 2
 end
 
 function SpinMeter:draw()

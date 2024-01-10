@@ -39,20 +39,27 @@ function Player:update()
 		return
 	end
 	if self.state == STATES.INPUT_POSITION then
-		if self.position_meter:player_out_of_bounds(self) then
-			print("out of bounds")
-		else
-			print("in bounds")
-		end
 		if playdate.buttonIsPressed(playdate.kButtonLeft) then
-			self:moveTo(self.x - 1, self.y)
+			local new_x = self.x - 1
+			if self.position_meter:is_in_bounds(new_x, self.y) then
+				self:moveTo(new_x, self.y)
+			end
 		elseif playdate.buttonIsPressed(playdate.kButtonRight) then
-			self:moveTo(self.x + 1, self.y)
+			local new_x = self.x + 1
+			if self.position_meter:is_in_bounds(new_x, self.y) then
+				self:moveTo(new_x, self.y)
+			end
 		end
 		if playdate.buttonIsPressed(playdate.kButtonUp) then
-			self:moveTo(self.x, self.y - 1)
+			local new_y = self.y - 1
+			if self.position_meter:is_in_bounds(self.x, new_y) then
+				self:moveTo(self.x, new_y)
+			end
 		elseif playdate.buttonIsPressed(playdate.kButtonDown) then
-			self:moveTo(self.x, self.y + 1)
+			local new_y = self.y + 1
+			if self.position_meter:is_in_bounds(self.x, new_y) then
+				self:moveTo(self.x, new_y)
+			end
 		end
 		if playdate.buttonJustReleased(playdate.kButtonA) then
 			SpriteManagerSingleton:remove(self.position_meter)

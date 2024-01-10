@@ -13,6 +13,11 @@ function PositionMeter:init(player_x, player_y, player)
 		self.arc:copy(),
 		self.arc:copy(),
 		self.arc:copy(),
+		self.arc:copy(),
+		self.arc:copy(),
+		self.arc:copy(),
+		self.arc:copy(),
+		self.arc:copy(),
 	}
 	for i, arc in ipairs(self.arcs) do
 		arc.radius = self.radius
@@ -28,11 +33,10 @@ function PositionMeter:update()
 	end
 end
 
-function PositionMeter:player_out_of_bounds(player)
+function PositionMeter:is_in_bounds(x, y)
 	local max_distance = self.radius + 1
-	local distance_squared = (player.x - self.start_x) * (player.x - self.start_x)
-		+ (player.y - self.start_y) * (player.y - self.start_y)
-	return distance_squared >= max_distance * max_distance
+	local distance_squared = (x - self.start_x) * (x - self.start_x) + (y - self.start_y) * (y - self.start_y)
+	return distance_squared <= max_distance * max_distance
 end
 
 function PositionMeter:draw()
