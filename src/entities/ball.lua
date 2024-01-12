@@ -17,17 +17,15 @@ function Ball:init(x, y, dir_x, dir_y, power, spin)
 	local direction_vector = vector2D.new(dir_x or 0, dir_y or 0)
 	direction_vector:normalize()
 	self.velocity_vector = direction_vector * (power or 0) / 2
-	local spin_angle = math.atan2(direction_vector.y, direction_vector.x) + math.rad(90)
-	self.spin_vector = vector2D.newPolar(1, spin_angle)
 
-	self.spin = 20 -- spin value set by player
-	self.accumulated_spin = 0
-	self.spin_modifier = self.friction
 	self.friction = 0.94
 	self.friction_vector = vector2D.new(self.friction, self.friction)
 	self.mass = 10
 	self.radius = 6
 	self:setCollideRect(0, 0, self:getSize())
+
+	-- TODO: get spin to work
+	self.spin = zero_vector
 end
 
 function Ball:update()
@@ -35,7 +33,7 @@ function Ball:update()
 	if self.velocity_vector:magnitude() < 0.01 then
 		self.velocity_vector = zero_vector
 	end
-	self.position = self.position + self.velocity_vector * DELTA_TIME
+	self.position = self.position + ((self.velocity_vector + self.spin) * DELTA_TIME)
 	self:moveTo(self.position.x, self.position.y)
 	local others = self:overlappingSprites()
 	for _, other in pairs(others) do
