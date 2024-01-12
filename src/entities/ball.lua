@@ -8,6 +8,20 @@ class("WhiteBall").extends(Ball)
 class("BlackBall").extends(Ball)
 class("WhiteGrayBall").extends(Ball)
 class("BlackGrayBall").extends(Ball)
+class("BallTrail").extends(BaseEntity)
+function BallTrail:init(x, y)
+	BallTrail.super.init(self)
+	self:setSize(3, 3)
+	--self:setAlwaysRedraw(true)
+	self:moveTo(x, y)
+	self.draw = function(self)
+		print("ball trail draw")
+		gfx.pushContext()
+		gfx.setColor(playdate.graphics.kColorBlack)
+		gfx.drawPixel(0, 0)
+		gfx.popContext()
+	end
+end
 
 function Ball:init(x, y, dir_x, dir_y, power, spin)
 	Ball.super.init(self)
@@ -17,25 +31,41 @@ function Ball:init(x, y, dir_x, dir_y, power, spin)
 	local direction_vector = vector2D.new(dir_x or 0, dir_y or 0)
 	direction_vector:normalize()
 	self.velocity_vector = direction_vector * (power or 0) / 2
+
 	local spin_angle = math.atan2(direction_vector.y, direction_vector.x) + math.rad(90)
 	self.spin_vector = vector2D.newPolar(1, spin_angle)
+	local spin_power = (spin or 0) * 400
+	if spin_power ~= 0 then
+		self.spin_animation = playdate.graphics.animator.new(1000, -spin_power / 2, spin_power / 2)
+		-- self.spin = spin or 0
+		-- self.spin_timer = playdate.timer.new(500, 0, self.spin * 400, playdate.easingFunctions.inCubic)
+		-- self.spin_timer.s = 0
+		-- self.spin_amount = self.spin * 400
+		-- self.accumulated_spin = 0
+		-- self.spin_modifier = self.friction
+	end
 
-	self.spin = 20 -- spin value set by player
-	self.accumulated_spin = 0
-	self.spin_modifier = self.friction
 	self.friction = 0.94
 	self.friction_vector = vector2D.new(self.friction, self.friction)
 	self.mass = 10
 	self.radius = 6
 	self:setCollideRect(0, 0, self:getSize())
+	self.trail = {}
 end
 
 function Ball:update()
+	local spin = zero_vector
+	if self.spin_animation and not self.spin_animation:ended() then
+		spin = self.spin_vector * self.spin_animation:currentValue()
+	end
 	self.velocity_vector = self.velocity_vector * self.friction
 	if self.velocity_vector:magnitude() < 0.01 then
 		self.velocity_vector = zero_vector
+		spin = zero_vector
+	else
+		--SpriteManagerSingleton:add(BallTrail(self.x, self.y))
 	end
-	self.position = self.position + self.velocity_vector * DELTA_TIME
+	self.position = self.position + ((self.velocity_vector + spin) * DELTA_TIME)
 	self:moveTo(self.position.x, self.position.y)
 	local others = self:overlappingSprites()
 	for _, other in pairs(others) do

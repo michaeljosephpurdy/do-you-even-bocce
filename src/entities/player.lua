@@ -102,7 +102,7 @@ function Player:update()
 	elseif self.state == STATES.READY_TO_THROW then
 		self.direction:normalize()
 		local dir_x, dir_y = self.direction:unpack()
-		SpriteManagerSingleton:add(WhiteBall(self.x, self.y, dir_x, dir_y, self.power))
+		SpriteManagerSingleton:add(WhiteBall(self.x, self.y, dir_x, dir_y, self.power, self.spin))
 		self:reset()
 		self:next_state(STATES.INPUT_POSITION)
 		self.position_meter = PositionMeter(self.x, self.y, self)

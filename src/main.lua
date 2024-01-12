@@ -25,6 +25,7 @@ function init()
 	player:add()
 	local jack_ball = JackBall(math.random(100, 380), math.random(50, 150))
 	SpriteManagerSingleton:add(jack_ball)
+	--SpriteManagerSingleton:add(jack_ball)
 end
 
 init()
