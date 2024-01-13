@@ -5,9 +5,13 @@ import("CoreLibs/graphics")
 import("CoreLibs/sprites")
 import("CoreLibs/timer")
 import("CoreLibs/ui")
+-- base classes
+import("scenes/base-scene")
 import("entities/base-entity")
 import("entities/base-meter")
+
 import("systems/sprite-manager")
+import("systems/scene-manager")
 import("scenes/bocce-game")
 import("entities/ball")
 import("entities/phase-overlay")
@@ -17,28 +21,20 @@ import("entities/power-meter")
 import("entities/spin-meter")
 import("entities/player")
 
-local gfx <const> = playdate.graphics
-
 function init()
 	SpriteManagerSingleton = SpriteManager()
-	local player = Player()
-	player:add()
-	local jack_ball = JackBall(math.random(100, 380), math.random(50, 150))
-	SpriteManagerSingleton:add(jack_ball)
-	--SpriteManagerSingleton:add(jack_ball)
+	SceneManagerSingleton = SceneManager()
+	SceneManagerSingleton:add_state(BocceGameScene())
+	SceneManagerSingleton:next_state(BocceGameScene)
 end
 
 init()
 
 function playdate.update()
+	if playdate.buttonJustReleased(playdate.kButtonB) then
+		SceneManagerSingleton:next_state(BocceGameScene)
+	end
 	DELTA_TIME = playdate.getElapsedTime()
 	playdate.resetElapsedTime()
-	if playdate.buttonJustReleased(playdate.kButtonB) then
-		SpriteManagerSingleton:lazy_remove_all()
-		SpriteManagerSingleton:add(JackBall(math.random(100, 400), math.random(50, 150)))
-	end
-	SpriteManagerSingleton:update()
-	gfx.sprite.update()
-	playdate.timer.updateTimers()
-	playdate.drawFPS(10, 220)
+	SceneManagerSingleton:update()
 end

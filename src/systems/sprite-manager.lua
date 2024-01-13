@@ -72,4 +72,5 @@ function SpriteManager:update()
 		self:remove(old_sprite)
 		return
 	end
+	sprite_class.update()
 end
