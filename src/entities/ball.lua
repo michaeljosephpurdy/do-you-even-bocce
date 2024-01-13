@@ -32,40 +32,24 @@ function Ball:init(x, y, dir_x, dir_y, power, spin)
 	direction_vector:normalize()
 	self.velocity_vector = direction_vector * (power or 0) / 2
 
-	local spin_angle = math.atan2(direction_vector.y, direction_vector.x) + math.rad(90)
-	self.spin_vector = vector2D.newPolar(1, spin_angle)
-	local spin_power = (spin or 0) * 400
-	if spin_power ~= 0 then
-		self.spin_animation = playdate.graphics.animator.new(1000, -spin_power / 2, spin_power / 2)
-		-- self.spin = spin or 0
-		-- self.spin_timer = playdate.timer.new(500, 0, self.spin * 400, playdate.easingFunctions.inCubic)
-		-- self.spin_timer.s = 0
-		-- self.spin_amount = self.spin * 400
-		-- self.accumulated_spin = 0
-		-- self.spin_modifier = self.friction
-	end
-
 	self.friction = 0.94
 	self.friction_vector = vector2D.new(self.friction, self.friction)
 	self.mass = 10
 	self.radius = 6
 	self:setCollideRect(0, 0, self:getSize())
-	self.trail = {}
+
+	-- TODO: get spin to work
+	local spin_angle = math.atan2(direction_vector.y, direction_vector.x) + math.rad(90)
+	self.spin_vector = vector2D.newPolar(1, spin_angle)
+	self.spin = zero_vector
 end
 
 function Ball:update()
-	local spin = zero_vector
-	if self.spin_animation and not self.spin_animation:ended() then
-		spin = self.spin_vector * self.spin_animation:currentValue()
-	end
 	self.velocity_vector = self.velocity_vector * self.friction
 	if self.velocity_vector:magnitude() < 0.01 then
 		self.velocity_vector = zero_vector
-		spin = zero_vector
-	else
-		--SpriteManagerSingleton:add(BallTrail(self.x, self.y))
 	end
-	self.position = self.position + ((self.velocity_vector + spin) * DELTA_TIME)
+	self.position = self.position + ((self.velocity_vector + self.spin) * DELTA_TIME)
 	self:moveTo(self.position.x, self.position.y)
 	local others = self:overlappingSprites()
 	for _, other in pairs(others) do
