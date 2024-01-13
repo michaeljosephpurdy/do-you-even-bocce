@@ -66,15 +66,6 @@ function SpriteManager:lazy_remove_all()
 end
 
 function SpriteManager:update()
-	local collisions = sprite_class.allOverlappingSprites()
-	for i = 1, #collisions do
-		local collisionPair = collisions[i]
-		local sprite1 = collisionPair[1]
-		local sprite2 = collisionPair[2]
-		--if sprite1:isa(BaseEntity) and sprite2:isa(BaseEntity) then
-		--sprite1:collides_with(sprite2)
-		--end
-	end
 	-- lazy removal of inactive sprites
 	for i, _ in ipairs(self.inactive_sprites) do
 		local old_sprite = table.remove(self.inactive_sprites, i)
@@ -82,5 +73,3 @@ function SpriteManager:update()
 		return
 	end
 end
-
-return SpriteManager
