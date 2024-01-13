@@ -16,8 +16,11 @@ end
 local function determine_new_player(self)
 	local next_player = self.inactive_player
 	self.inactive_player = self.active_player
+	self.inactive_player:deactivate()
 	self.active_player = next_player
 	self.active_player:activate()
+	print("self.inactive_player " .. self.inactive_player.name)
+	print("self.active_player " .. self.active_player.name)
 end
 
 function BocceGameTurnManager:update()

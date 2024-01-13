@@ -7,8 +7,8 @@ end
 
 function BocceGameScene:setup()
 	self.turn_manager = BocceGameTurnManager()
-	self.turn_manager:add(Player("player one", WhiteBall))
-	self.turn_manager:add(Player("player two", BlackBall))
+	self.turn_manager:add(ControllablePlayer("player one", WhiteBall))
+	self.turn_manager:add(AiPlayer("player two", BlackBall))
 	local jack_ball = JackBall(math.random(100, 380), math.random(50, 150))
 	SpriteManagerSingleton:add(jack_ball)
 end
