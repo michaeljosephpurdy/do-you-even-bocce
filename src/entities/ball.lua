@@ -8,20 +8,6 @@ class("WhiteBall").extends(Ball)
 class("BlackBall").extends(Ball)
 class("WhiteGrayBall").extends(Ball)
 class("BlackGrayBall").extends(Ball)
-class("BallTrail").extends(BaseEntity)
-function BallTrail:init(x, y)
-	BallTrail.super.init(self)
-	self:setSize(3, 3)
-	--self:setAlwaysRedraw(true)
-	self:moveTo(x, y)
-	self.draw = function(self)
-		print("ball trail draw")
-		gfx.pushContext()
-		gfx.setColor(playdate.graphics.kColorBlack)
-		gfx.drawPixel(0, 0)
-		gfx.popContext()
-	end
-end
 
 function Ball:init(x, y, dir_x, dir_y, power, spin)
 	Ball.super.init(self)
@@ -46,7 +32,7 @@ end
 
 function Ball:update()
 	self.velocity_vector = self.velocity_vector * self.friction
-	if self.velocity_vector:magnitude() < 0.01 then
+	if self.velocity_vector:magnitude() < 1 then
 		self.velocity_vector = zero_vector
 	end
 	self.position = self.position + ((self.velocity_vector + self.spin) * DELTA_TIME)
@@ -66,6 +52,10 @@ function Ball:check_collision_with_ball(other)
 	local max_distance = self.radius + other.radius
 	local distance_squared = (other.x - self.x) * (other.x - self.x) + (other.y - self.y) * (other.y - self.y)
 	return distance_squared <= max_distance * max_distance
+end
+
+function Ball:is_done()
+	return self.velocity_vector.x == 0 and self.velocity_vector.y == 0
 end
 
 function Ball:collide_with_ball(other)

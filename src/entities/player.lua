@@ -11,14 +11,24 @@ local STATES = {
 	THROWING = "THROWING",
 }
 Player.STATES = STATES
-function Player:init()
+
+function Player:init(name, ball_type)
 	Player.super.init(self)
+	self.ball_type = ball_type
 	self:setImage(gfx.image.new("images/player-small"))
 	self:moveTo(40, 100)
-	self.state = STATES.INPUT_POSITION
+	self.name = name
+	self.state = STATES.WAITING_FOR_TURN
 	self.overlay = PositionPhaseOverlay()
 	self.position_meter = PositionMeter(self.x, self.y, self)
+end
+
+function Player:activate()
+	self.position_meter = PositionMeter(self.x, self.y, self)
 	SpriteManagerSingleton:add(self.position_meter)
+	self.overlay = PositionPhaseOverlay()
+	SpriteManagerSingleton:add(self.overlay)
+	self:next_state(Player.STATES.INPUT_POSITION)
 end
 
 function Player:reset()
@@ -35,7 +45,7 @@ function Player:next_state(new_state)
 end
 
 function Player:update()
-	if self.state == STATES.WAITING_FOR_TURN or self.state == STATES.THROWING then
+	if self.state == STATES.WAITING_FOR_TURN then
 		return
 	end
 	if self.state == STATES.INPUT_POSITION then
@@ -102,12 +112,20 @@ function Player:update()
 	elseif self.state == STATES.READY_TO_THROW then
 		self.direction:normalize()
 		local dir_x, dir_y = self.direction:unpack()
-		SpriteManagerSingleton:add(WhiteBall(self.x, self.y, dir_x, dir_y, self.power, self.spin))
+		self.thrown_ball = self.ball_type(self.x, self.y, dir_x, dir_y, self.power, self.spin)
+		self.thrown_ball.player = self
+		SpriteManagerSingleton:add(self.thrown_ball)
 		self:reset()
-		self:next_state(STATES.INPUT_POSITION)
-		self.position_meter = PositionMeter(self.x, self.y, self)
-		SpriteManagerSingleton:add(self.position_meter)
-		self.overlay = PositionPhaseOverlay()
-		SpriteManagerSingleton:add(self.overlay)
+		self:next_state(STATES.THROWING)
+	elseif self.state == STATES.THROWING then
+		print("checking if done")
+		if self.thrown_ball:is_done() then
+			print("player is done")
+			self:next_state(STATES.WAITING_FOR_TURN)
+		end
 	end
+end
+
+function Player:is_done()
+	return self.state == STATES.WAITING_FOR_TURN
 end
