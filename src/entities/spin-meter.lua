@@ -7,7 +7,7 @@ function SpinMeter:init(player_x, player_y, starting_direction)
 	self.overlay_arc = self.arc:copy()
 	self.overlay_arc.startAngle = self.overlay_arc.startAngle - 1
 	self.overlay_arc.endAngle = self.overlay_arc.endAngle + 1
-	self.arc_offset = 2
+	self.arc_offset = 4
 
 	self.animation = playdate.graphics.animator.new(1500, 0, 1, playdate.easingFunctions.inOutBack)
 	self.animation.s = 0
