@@ -24,7 +24,6 @@ end
 function SceneManager:next_state(state)
 	local found = false
 	for _, existing_state in pairs(self.states) do
-		print(existing_state)
 		if existing_state.className == state.className then
 			found = true
 		end

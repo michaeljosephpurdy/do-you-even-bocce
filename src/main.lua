@@ -8,6 +8,7 @@ import("CoreLibs/ui")
 -- base classes
 import("scenes/base-scene")
 import("entities/base-entity")
+import("entities/base-player")
 import("entities/base-meter")
 
 import("systems/sprite-manager")
@@ -20,7 +21,8 @@ import("entities/position-meter")
 import("entities/direction-meter")
 import("entities/power-meter")
 import("entities/spin-meter")
-import("entities/player")
+import("entities/controllable-player")
+import("entities/ai-player")
 
 function init()
 	SpriteManagerSingleton = SpriteManager()

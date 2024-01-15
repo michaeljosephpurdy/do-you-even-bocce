@@ -31,6 +31,7 @@ function Ball:init(x, y, dir_x, dir_y, power, spin)
 end
 
 function Ball:update()
+	self:fix_z_index()
 	self.velocity_vector = self.velocity_vector * self.friction
 	if self.velocity_vector:magnitude() < 1 then
 		self.velocity_vector = zero_vector
@@ -75,7 +76,7 @@ function JackBall:init(x, y)
 	self:setImage(gfx.image.new("images/ball-jack"))
 	self.mass = 8
 	self.radius = 3
-	self.friction = 0
+	self.friction = 0.75
 	self:setCollideRect(0, 0, self:getSize())
 end
 
