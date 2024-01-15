@@ -15,10 +15,14 @@ ControllablePlayer.STATES = STATES
 function ControllablePlayer:init(name, ball_type)
 	ControllablePlayer.super.init(self, name, ball_type)
 	self:setImage(gfx.image.new("images/player-small"))
+	if ball_type:isa(BlackBall) then
+		self:setImage(gfx.image.new("images/other-player-small"))
+	end
 	self:moveTo(40, 100)
 	self.state = STATES.WAITING_FOR_TURN
 	self.overlay = PositionPhaseOverlay()
 	self.input_meter = PositionMeter(self.x, self.y, self)
+	self:fix_z_index()
 end
 
 function ControllablePlayer:activate()

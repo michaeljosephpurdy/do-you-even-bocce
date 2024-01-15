@@ -76,7 +76,7 @@ function JackBall:init(x, y)
 	self:setImage(gfx.image.new("images/ball-jack"))
 	self.mass = 8
 	self.radius = 3
-	self.friction = 0
+	self.friction = 0.75
 	self:setCollideRect(0, 0, self:getSize())
 end
 
