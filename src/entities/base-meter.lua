@@ -2,6 +2,7 @@ class("BaseMeter").extends(playdate.graphics.sprite)
 
 function BaseMeter:init(player_x, player_y, starting_direction)
 	BaseMeter.super.init(self)
+	self:setZIndex(5000)
 	self:setSize(400, 240)
 	self:setCenter(0, 0)
 	self:moveTo(0, 0)

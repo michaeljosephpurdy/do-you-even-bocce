@@ -6,7 +6,6 @@ function PositionMeter:init(player_x, player_y, player)
 	self:setAlwaysRedraw(true)
 	self.radius = 50
 	self.start_x, self.start_y = player_x, player_y
-	self:setZIndex(player:getZIndex() - 1)
 	self.arcs = {
 		self.arc:copy(),
 		self.arc:copy(),

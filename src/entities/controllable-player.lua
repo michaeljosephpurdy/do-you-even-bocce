@@ -119,6 +119,7 @@ function ControllablePlayer:update()
 		self.thrown_ball = self.ball_type(self.x, self.y, dir_x, dir_y, self.power, self.spin)
 		self.thrown_ball.player = self
 		SpriteManagerSingleton:add(self.thrown_ball)
+		self.on_throw(self.thrown_ball)
 		self:reset()
 		self:next_state(STATES.THROWING)
 	elseif self.state == STATES.THROWING then

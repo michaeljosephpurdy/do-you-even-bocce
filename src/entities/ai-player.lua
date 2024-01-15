@@ -1,5 +1,6 @@
 local gfx <const> = playdate.graphics
 local vector2D <const> = playdate.geometry.vector2D
+local timer <const> = playdate.timer
 class("AiPlayer").extends(BasePlayer)
 
 function AiPlayer:init(name, ball_type)
@@ -19,12 +20,6 @@ function AiPlayer:update()
 	if self.thrown_ball then
 		return
 	end
-	local dir_x, dir_y = calculate_direction(self)
-	local power = calculate_power(self)
-	local spin = 0
-	self.thrown_ball = self.ball_type(self.x, self.y, dir_x, dir_y, power, spin)
-	self.thrown_ball.player = self
-	SpriteManagerSingleton:add(self.thrown_ball)
 end
 
 function calculate_direction(self)
@@ -57,6 +52,15 @@ function AiPlayer:activate()
 	AiPlayer.super.activate(self)
 	self.active = true
 	self.thrown_ball = nil
+	timer.performAfterDelay(math.random(500, 2000), function()
+		local dir_x, dir_y = calculate_direction(self)
+		local power = calculate_power(self)
+		local spin = 0
+		self.thrown_ball = self.ball_type(self.x, self.y, dir_x, dir_y, power, spin)
+		self.thrown_ball.player = self
+		SpriteManagerSingleton:add(self.thrown_ball)
+		self.on_throw(self.thrown_ball)
+	end)
 end
 
 function AiPlayer:is_done()

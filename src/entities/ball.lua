@@ -33,7 +33,7 @@ end
 function Ball:update()
 	self:fix_z_index()
 	self.velocity_vector = self.velocity_vector * self.friction
-	if self.velocity_vector:magnitude() < 1 then
+	if math.abs(self.velocity_vector:magnitude()) < 0.5 then
 		self.velocity_vector = zero_vector
 	end
 	self.position = self.position + ((self.velocity_vector + self.spin) * DELTA_TIME)
