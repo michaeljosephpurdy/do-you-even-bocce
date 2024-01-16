@@ -5,6 +5,7 @@ function BasePlayer:init(name, ball_type)
 	BasePlayer.super.init(self)
 	self.name = name
 	self.ball_type = ball_type
+	self.points = 0
 end
 
 function BasePlayer:update()
@@ -21,4 +22,8 @@ end
 
 function BasePlayer:is_done()
 	assert(nil, "BasePlayer:is_done must be overwritten")
+end
+
+function BasePlayer:add_points(points)
+	self.points = self.points + points
 end

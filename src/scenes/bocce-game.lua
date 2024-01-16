@@ -17,7 +17,7 @@ end
 
 function BocceGameScene:setup()
 	self.state = STATES.PLAYING
-	self.turn_manager = BocceGameTurnManager(2)
+	self.turn_manager = BocceGameTurnManager(8)
 	self.thrown_balls = {}
 	local ai_player = AiPlayer("player two", BlackBall)
 	ai_player.on_throw = function(ball)
@@ -31,9 +31,9 @@ function BocceGameScene:setup()
 	end
 	self.turn_manager:add(controllable_player)
 
-	local jack_ball = JackBall(math.random(150, 350), math.random(50, 150))
-	self.turn_manager:add(jack_ball)
-	SpriteManagerSingleton:add(jack_ball)
+	self.jack_ball = JackBall(math.random(150, 350), math.random(50, 150))
+	self.turn_manager:add(self.jack_ball)
+	SpriteManagerSingleton:add(self.jack_ball)
 end
 
 function BocceGameScene:update()

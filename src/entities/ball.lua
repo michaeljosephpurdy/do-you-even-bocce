@@ -33,6 +33,8 @@ end
 function Ball:update()
 	self:fix_z_index()
 	self.velocity_vector = self.velocity_vector * self.friction
+	print(tostring(self))
+	print(math.abs(self.velocity_vector:magnitude()))
 	if math.abs(self.velocity_vector:magnitude()) < 0.5 then
 		self.velocity_vector = zero_vector
 	end
@@ -69,6 +71,8 @@ function Ball:collide_with_ball(other)
 
 	self.velocity_vector = self.velocity_vector + position_difference * impulse * self.mass * self.friction
 	other.velocity_vector = other.velocity_vector - position_difference * impulse * other.mass * other.friction
+	--self.velocity_vector = position_difference * impulse * self.mass * self.friction
+	--other.velocity_vector = -position_difference * impulse * other.mass * other.friction
 end
 
 function JackBall:init(x, y)
