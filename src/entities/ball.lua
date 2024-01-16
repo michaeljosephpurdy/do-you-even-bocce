@@ -31,20 +31,28 @@ function Ball:init(x, y, dir_x, dir_y, power, spin)
 end
 
 function Ball:update()
-	self:fix_z_index()
-	self.velocity_vector = self.velocity_vector * self.friction
-	print(tostring(self))
-	print(math.abs(self.velocity_vector:magnitude()))
-	if math.abs(self.velocity_vector:magnitude()) < 0.5 then
+	if
+		(self.velocity_vector.x <= 0.5 and self.velocity_vector.x >= -0.5)
+		and (self.velocity_vector.y <= 0.5 and self.velocity_vector.y >= -0.5)
+	then
 		self.velocity_vector = zero_vector
 	end
+	self:fix_z_index()
+	self.velocity_vector = self.velocity_vector * self.friction
 	self.position = self.position + ((self.velocity_vector + self.spin) * DELTA_TIME)
 	self:moveTo(self.position.x, self.position.y)
-	local others = self:overlappingSprites()
-	for _, other in pairs(others) do
-		if self:check_collision_with_ball(other) then
-			self:collide_with_ball(other)
-		end
+end
+
+function Ball:is_done()
+	return self.velocity_vector.x == 0 and self.velocity_vector.y == 0
+end
+
+function Ball:collides_with(other)
+	if not other:isa(Ball) then
+		return false
+	end
+	if self:check_collision_with_ball(other) then
+		self:collide_with_ball(other)
 	end
 end
 
@@ -57,10 +65,6 @@ function Ball:check_collision_with_ball(other)
 	return distance_squared <= max_distance * max_distance
 end
 
-function Ball:is_done()
-	return self.velocity_vector.x == 0 and self.velocity_vector.y == 0
-end
-
 function Ball:collide_with_ball(other)
 	local velocity_difference = other.velocity_vector - self.velocity_vector
 	local position_difference = other.position - self.position
@@ -71,8 +75,6 @@ function Ball:collide_with_ball(other)
 
 	self.velocity_vector = self.velocity_vector + position_difference * impulse * self.mass * self.friction
 	other.velocity_vector = other.velocity_vector - position_difference * impulse * other.mass * other.friction
-	--self.velocity_vector = position_difference * impulse * self.mass * self.friction
-	--other.velocity_vector = -position_difference * impulse * other.mass * other.friction
 end
 
 function JackBall:init(x, y)

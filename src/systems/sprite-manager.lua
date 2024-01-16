@@ -46,10 +46,8 @@ function SpriteManager:remove(entity, i)
 	end
 	for i, active_sprite in ipairs(self.active_sprites) do
 		if active_sprite == entity then
-			if active_sprite:isa(sprite_class) then
-				active_sprite:remove()
-			end
-			table.remove(self.active_sprites, i)
+			self:remove(entity, i)
+			return
 		end
 	end
 end
@@ -70,7 +68,15 @@ function SpriteManager:update()
 	for i, _ in ipairs(self.inactive_sprites) do
 		local old_sprite = table.remove(self.inactive_sprites, i)
 		self:remove(old_sprite)
-		return
+		break
 	end
 	sprite_class.update()
+	local colliding_sprites = sprite_class.allOverlappingSprites()
+	for i = 1, #colliding_sprites do
+		local collision_pair = colliding_sprites[i]
+		local a = collision_pair[1]
+		local b = collision_pair[2]
+		a:collides_with(b)
+		--b:collides_with(a)
+	end
 end

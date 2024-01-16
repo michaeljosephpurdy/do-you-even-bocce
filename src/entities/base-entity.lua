@@ -17,6 +17,7 @@ end
 
 function BaseEntity:collides_with(other)
 	print("collision! " .. tostring(self) .. " with " .. tostring(other))
+	return false
 end
 
 function BaseEntity:check_collision(other) end
