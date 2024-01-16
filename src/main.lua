@@ -13,7 +13,6 @@ import("entities/base-meter")
 
 import("systems/sprite-manager")
 import("systems/scene-manager")
-import("systems/bocce-game-turn-manager")
 import("scenes/bocce-game")
 import("entities/ball")
 import("entities/phase-overlay")

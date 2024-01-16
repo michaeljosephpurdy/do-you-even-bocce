@@ -1,9 +1,10 @@
 class("BocceGameTurnManager").extends()
 
-function BocceGameTurnManager:init()
+function BocceGameTurnManager:init(balls_per_player)
 	self.active_player = nil
 	self.inactive_player = nil
 	self.players = {}
+	self.balls = balls_per_player
 end
 
 function BocceGameTurnManager:add(entity)
@@ -27,10 +28,22 @@ local function determine_new_player(self)
 	self.active_player:activate()
 	print("self.inactive_player " .. self.inactive_player.name)
 	print("self.active_player " .. self.active_player.name)
+	self.balls = self.balls - 1
+	print(self.balls)
 end
 
 function BocceGameTurnManager:update()
+	if self.game_over then
+		return
+	end
+	if self.balls == 0 then
+		self.game_over = true
+	end
 	if self.active_player:is_done() then
 		determine_new_player(self)
 	end
+end
+
+function BocceGameTurnManager:is_done()
+	return self.game_over and self.active_player:is_done()
 end
