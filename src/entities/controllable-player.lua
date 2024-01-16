@@ -22,7 +22,7 @@ function ControllablePlayer:init(name, ball_type)
 	self.state = STATES.WAITING_FOR_TURN
 	self.overlay = PositionPhaseOverlay()
 	self.input_meter = PositionMeter(self.x, self.y, self)
-	self:fix_z_index()
+	self:fix_draw_order()
 end
 
 function ControllablePlayer:activate()
