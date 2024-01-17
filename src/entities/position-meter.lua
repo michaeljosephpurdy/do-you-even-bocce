@@ -2,8 +2,7 @@ local gfx <const> = playdate.graphics
 class("PositionMeter").extends(BaseMeter)
 
 function PositionMeter:init(player_x, player_y, player)
-	PositionMeter.super.init(self, player_x, player_y, 0)
-	self:setAlwaysRedraw(true)
+	PositionMeter.super.init(self, player_x, player_y, 150, 150, 0)
 	self.radius = 50
 	self.start_x, self.start_y = player_x, player_y
 	self.arcs = {
@@ -26,6 +25,7 @@ function PositionMeter:init(player_x, player_y, player)
 end
 
 function PositionMeter:update()
+	self:markDirty()
 	for _, arc in pairs(self.arcs) do
 		arc.startAngle = arc.startAngle + 1
 		arc.endAngle = arc.endAngle + 1
@@ -39,11 +39,11 @@ function PositionMeter:is_in_bounds(x, y)
 end
 
 function PositionMeter:draw()
-	gfx.pushContext()
+	gfx.lockFocus(self.image)
 	gfx.setLineWidth(self.arc_width)
 	gfx.setColor(playdate.graphics.kColorXOR)
 	for _, arc in pairs(self.arcs) do
 		gfx.drawArc(arc)
 	end
-	gfx.popContext()
+	gfx.unlockFocus()
 end

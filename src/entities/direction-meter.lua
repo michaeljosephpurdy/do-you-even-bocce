@@ -2,7 +2,7 @@ local gfx <const> = playdate.graphics
 class("DirectionMeter").extends(BaseMeter)
 
 function DirectionMeter:init(player_x, player_y, starting_direction)
-	DirectionMeter.super.init(self, player_x, player_y, starting_direction)
+	DirectionMeter.super.init(self, player_x, player_y, 100, 100, starting_direction)
 	self.crank_indicator_time = 3
 end
 
