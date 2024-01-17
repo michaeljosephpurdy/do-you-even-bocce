@@ -2,8 +2,7 @@ local gfx <const> = playdate.graphics
 class("SpinMeter").extends(BaseMeter)
 
 function SpinMeter:init(player_x, player_y, starting_direction)
-	SpinMeter.super.init(self, player_x, player_y, starting_direction)
-	self:setAlwaysRedraw(true)
+	SpinMeter.super.init(self, player_x, player_y, 100, 100, starting_direction)
 	self.overlay_arc = self.arc:copy()
 	self.overlay_arc.startAngle = self.overlay_arc.startAngle - 1
 	self.overlay_arc.endAngle = self.overlay_arc.endAngle + 1
@@ -16,6 +15,7 @@ function SpinMeter:init(player_x, player_y, starting_direction)
 end
 
 function SpinMeter:update()
+	self:markDirty()
 	local offset = (self.animation:currentValue() - 0.5) * self.arc_offset
 	self.arc.startAngle = self.arc.startAngle + offset
 	self.arc.endAngle = self.arc.endAngle + offset
@@ -29,12 +29,12 @@ function SpinMeter:get_value()
 end
 
 function SpinMeter:draw()
-	gfx.pushContext()
+	gfx.lockFocus(self.image)
 	gfx.setLineWidth(self.arc_width)
 	gfx.setColor(playdate.graphics.kColorXOR)
 	gfx.drawArc(self.arc)
 	gfx.setLineWidth(self.arc_width / 2)
 	gfx.setColor(playdate.graphics.kColorXOR)
 	gfx.drawArc(self.overlay_arc)
-	gfx.popContext()
+	gfx.unlockFocus()
 end
