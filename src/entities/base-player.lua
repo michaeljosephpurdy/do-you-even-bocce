@@ -9,7 +9,7 @@ function BasePlayer:init(name, ball_type)
 end
 
 function BasePlayer:update()
-	self:fix_z_index()
+	self:fix_draw_order()
 end
 
 function BasePlayer:deactivate()

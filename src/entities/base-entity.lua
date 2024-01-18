@@ -4,7 +4,7 @@ function BaseEntity:init()
 	BaseEntity.super.init(self)
 end
 
-function BaseEntity:fix_z_index()
+function BaseEntity:fix_draw_order()
 	local z_index = math.floor(self.y + self.height / 2)
 	if self:getZIndex() == z_index then
 		return

@@ -7,9 +7,8 @@ function AiPlayer:init(name, ball_type)
 	AiPlayer.super.init(self, name, ball_type)
 	self:setImage(gfx.image.new("images/other-player-small"))
 	self:moveTo(40, 132)
-	self:setAlwaysRedraw(true)
 	self.offset = 15
-	self:fix_z_index()
+	self:fix_draw_order()
 end
 
 function AiPlayer:update()

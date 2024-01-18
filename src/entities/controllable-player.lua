@@ -22,7 +22,7 @@ function ControllablePlayer:init(name, ball_type)
 	self.state = STATES.WAITING_FOR_TURN
 	self.overlay = PositionPhaseOverlay()
 	self.input_meter = PositionMeter(self.x, self.y, self)
-	self:fix_z_index()
+	self:fix_draw_order()
 end
 
 function ControllablePlayer:activate()
@@ -116,7 +116,8 @@ function ControllablePlayer:update()
 	elseif self.state == STATES.READY_TO_THROW then
 		self.direction:normalize()
 		local dir_x, dir_y = self.direction:unpack()
-		self.thrown_ball = self.ball_type(self.x, self.y, dir_x, dir_y, self.power, self.spin)
+		local jump_height = 10
+		self.thrown_ball = self.ball_type(self.x, self.y, dir_x, dir_y, self.power, self.spin, jump_height)
 		self.thrown_ball.player = self
 		SpriteManagerSingleton:add(self.thrown_ball)
 		self.on_throw(self.thrown_ball)
