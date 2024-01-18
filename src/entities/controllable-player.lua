@@ -116,7 +116,8 @@ function ControllablePlayer:update()
 	elseif self.state == STATES.READY_TO_THROW then
 		self.direction:normalize()
 		local dir_x, dir_y = self.direction:unpack()
-		self.thrown_ball = self.ball_type(self.x, self.y, dir_x, dir_y, self.power, self.spin)
+		local jump_height = 10
+		self.thrown_ball = self.ball_type(self.x, self.y, dir_x, dir_y, self.power, self.spin, jump_height)
 		self.thrown_ball.player = self
 		SpriteManagerSingleton:add(self.thrown_ball)
 		self.on_throw(self.thrown_ball)
