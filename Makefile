@@ -1,6 +1,7 @@
 default:
 	rm -rf bocce.pdx
-	pdc --skip-unknown src bocce
+	#pdc --skip-unknown src bocce
+	pdc src bocce
 
 images:
 	# TODO, make this smart

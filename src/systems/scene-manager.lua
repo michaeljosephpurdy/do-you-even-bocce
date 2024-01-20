@@ -1,4 +1,5 @@
 class("SceneManager").extends()
+SceneManager.singleton = true
 
 function SceneManager:init()
 	self.states = {}
