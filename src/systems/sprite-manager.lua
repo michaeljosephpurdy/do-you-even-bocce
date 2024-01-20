@@ -1,5 +1,6 @@
 local sprite_class <const> = playdate.graphics.sprite
 class("SpriteManager").extends()
+SpriteManager.singleton = true
 
 function SpriteManager:init()
 	assert(not SpriteManager.instance, "SpriteManager is a singleton, only one should exist")
