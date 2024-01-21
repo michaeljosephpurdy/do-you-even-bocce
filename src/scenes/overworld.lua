@@ -12,6 +12,7 @@ function OverworldScene:init()
 		elseif payload.id == "BocceBallPlayer" then
 			local other_player = OverworldBocceBallPlayer(payload.BoccePlayers, payload.x, payload.y)
 			other_player.target = self.player
+			other_player.singleton = true
 			SpriteManagerSingleton:add(other_player, payload.x, payload.y)
 		end
 	end)
