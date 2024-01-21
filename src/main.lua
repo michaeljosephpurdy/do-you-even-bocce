@@ -1,10 +1,29 @@
 import("CoreLibs/animator")
 import("CoreLibs/easing")
 import("CoreLibs/object")
+-- add mixin support to CoreLibs/object
+function Object:implements(...)
+	for _, cls in pairs({ ... }) do
+		print(cls)
+		for k, v in pairs(cls) do
+			print(k)
+			print(v)
+			if self[k] == nil and type(v) == "function" then
+				self[k] = v
+			end
+		end
+	end
+end
+
 import("CoreLibs/graphics")
 import("CoreLibs/sprites")
 import("CoreLibs/timer")
 import("CoreLibs/ui")
+-- mixins
+import("mixins/with-player")
+import("mixins/trigger-by-player")
+import("mixins/calculate-direct-throw")
+import("mixins/ball-throwing")
 -- base classes
 import("scenes/base-scene")
 import("entities/base-entity")

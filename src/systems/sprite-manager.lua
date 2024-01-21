@@ -24,6 +24,9 @@ function SpriteManager:enable(entity)
 end
 
 function SpriteManager:add(sprite)
+	if sprite.is_player then
+		self.player = sprite
+	end
 	-- if a sprite needs to be a singleton, then
 	-- whenever we add the sprite, let's also remove
 	-- whatever old instance of that sprite is laying around

@@ -1,4 +1,5 @@
 class("OverworldControllablePlayer").extends(BasePlayer)
+OverworldControllablePlayer.is_player = true
 
 function OverworldControllablePlayer:init(x, y)
 	OverworldControllablePlayer.super.init(self, BasePlayer.TYPES.MAIN)
