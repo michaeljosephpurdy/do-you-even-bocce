@@ -1,4 +1,5 @@
 class("OverworldBocceBallPlayer").extends(BasePlayer)
+OverworldBocceBallPlayer:implements(TriggerByPlayerMixin)
 
 function OverworldBocceBallPlayer:init(type, x, y)
 	OverworldBocceBallPlayer.super.init(self, type)
@@ -18,9 +19,7 @@ function OverworldBocceBallPlayer:update()
 	OverworldBocceBallPlayer.super.update(self)
 	self.speak_icon:setZIndex(self:getZIndex())
 	self.speak_icon:setVisible(false)
-	for _, entity in ipairs(self:overlappingSprites()) do
-		if entity:isa(OverworldControllablePlayer) then
-			self.speak_icon:setVisible(true)
-		end
+	if self:collides_with_player() then
+		self.speak_icon:setVisible(true)
 	end
 end
