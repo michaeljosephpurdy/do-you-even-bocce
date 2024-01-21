@@ -1,5 +1,7 @@
 local gfx <const> = playdate.graphics
 class("BocceControllablePlayer").extends(BaseBoccePlayer)
+BocceControllablePlayer.is_player = true
+BocceControllablePlayer:implements(BallThrowingMixin)
 
 local STATES = {
 	WAITING_FOR_TURN = "WAITING_FOR_TURN",
@@ -114,10 +116,7 @@ function BocceControllablePlayer:update()
 		self.direction:normalize()
 		local dir_x, dir_y = self.direction:unpack()
 		local jump_height = 10
-		self.thrown_ball = self.ball_type(self.x, self.y, dir_x, dir_y, self.power, self.spin, jump_height)
-		self.thrown_ball.player = self
-		SpriteManagerSingleton:add(self.thrown_ball)
-		self.on_throw(self.thrown_ball)
+		self.thrown_ball = self:throw_ball(self.x, self.y, dir_x, dir_y, self.power, self.spin, jump_height)
 		self:reset()
 		self:next_state(STATES.THROWING)
 	elseif self.state == STATES.THROWING then

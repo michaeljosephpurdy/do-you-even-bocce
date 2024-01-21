@@ -1,6 +1,7 @@
-local vector2D <const> = playdate.geometry.vector2D
 local timer <const> = playdate.timer
 class("BocceAiPlayer").extends(BaseBoccePlayer)
+BocceAiPlayer:implements(CalculateDirectThrowMixin)
+BocceAiPlayer:implements(BallThrowingMixin)
 
 function BocceAiPlayer:init(type, x, y, ball_type)
 	BocceAiPlayer.super.init(self, type, ball_type)
@@ -19,27 +20,6 @@ function BocceAiPlayer:update()
 	end
 end
 
-function calculate_direction(self)
-	local self_vector = vector2D.new(self.x, self.y)
-	local jack_ball_vector = vector2D.new(self.jack_ball.x, self.jack_ball.y)
-	local offset_vector =
-		vector2D.new(math.random(-self.offset * 2, self.offset * 2), math.random(-self.offset * 2, self.offset * 2))
-	local difference = jack_ball_vector - self_vector + offset_vector
-	local angle = math.deg(math.atan(difference.y, difference.x)) + 90
-	local direction_vector = vector2D.newPolar(10, angle)
-	direction_vector:normalize()
-	return direction_vector:unpack()
-end
-
-function calculate_power(self)
-	local self_vector = vector2D.new(self.x, self.y)
-	local jack_ball_vector = vector2D.new(self.jack_ball.x, self.jack_ball.y)
-	local offset_vector =
-		vector2D.new(math.random(-self.offset * 2, self.offset * 2), math.random(-self.offset * 2, self.offset * 2))
-	local difference = jack_ball_vector - self_vector + offset_vector
-	return difference:magnitude() * 4
-end
-
 function BocceAiPlayer:deactivate()
 	BocceAiPlayer.super.deactivate(self)
 	self.active = false
@@ -50,14 +30,11 @@ function BocceAiPlayer:activate()
 	self.in_game = true
 	self.active = true
 	self.thrown_ball = nil
+
 	timer.performAfterDelay(math.random(500, 2000), function()
-		local dir_x, dir_y = calculate_direction(self)
-		local power = calculate_power(self)
-		local spin = 0
-		self.thrown_ball = self.ball_type(self.x, self.y, dir_x, dir_y, power, spin)
-		self.thrown_ball.player = self
-		SpriteManagerSingleton:add(self.thrown_ball)
-		self.on_throw(self.thrown_ball)
+		local dir_x, dir_y, power, spin = self:calculate_direct_throw(self.offset)
+		local jump_height = 0
+		self.thrown_ball = self:throw_ball(self.x, self.y, dir_x, dir_y, power, spin, jump_height)
 	end)
 end
 
