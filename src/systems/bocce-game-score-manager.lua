@@ -37,7 +37,7 @@ function BocceGameScoreManager:init(jack_ball, balls)
 		if ball.player ~= self.winning_player then
 			self.done_scoring = true
 		end
-		timer.performAfterDelay(i * 1000, function()
+		timer.performAfterDelay(i, function()
 			SpriteManagerSingleton:remove(ball)
 			ball:remove()
 			if i == #self.sorted_balls then

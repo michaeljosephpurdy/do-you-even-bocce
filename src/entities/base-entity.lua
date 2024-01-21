@@ -21,3 +21,8 @@ function BaseEntity:collides_with(other)
 end
 
 function BaseEntity:check_collision(other) end
+
+function BaseEntity:update()
+	BaseEntity.super.update(self)
+	self:fix_draw_order()
+end

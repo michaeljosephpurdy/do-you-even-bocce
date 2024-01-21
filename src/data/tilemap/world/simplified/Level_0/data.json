@@ -15,5 +15,34 @@
 		"Tile_Upper.png",
 		"DecorationTiles_Upper.png"
 	],
-	"entities" : {}
+	"entities": {
+		"MainCharacter": [
+			{
+				"id": "MainCharacter",
+				"iid": "fc231090-b0a0-11ee-9798-99deafdf0912",
+				"layer": "Entities",
+				"x": 48,
+				"y": 112,
+				"width": 16,
+				"height": 16,
+				"color": 2434341,
+				"customFields" : {}
+			}
+		],
+		"BocceBallPlayer": [
+			{
+				"id": "BocceBallPlayer",
+				"iid": "01d1d670-b0a0-11ee-9798-8da997b4e76c",
+				"layer": "Entities",
+				"x": 144,
+				"y": 96,
+				"width": 16,
+				"height": 16,
+				"color": 9568256,
+				"customFields": {
+					"BoccePlayers": "JEFF"
+				}
+			}
+		]
+	}
 }
