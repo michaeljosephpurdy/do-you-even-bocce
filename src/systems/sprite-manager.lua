@@ -9,6 +9,20 @@ function SpriteManager:init()
 	self.inactive_sprites = {}
 end
 
+function SpriteManager:map(fn)
+	for _, sprite in pairs(self.active_sprites) do
+		fn(sprite)
+	end
+end
+
+function SpriteManager:disable(entity)
+	entity:remove()
+end
+
+function SpriteManager:enable(entity)
+	entity:add()
+end
+
 function SpriteManager:add(sprite)
 	-- if a sprite needs to be a singleton, then
 	-- whenever we add the sprite, let's also remove
@@ -27,7 +41,9 @@ function SpriteManager:add(sprite)
 end
 
 function SpriteManager:remove_all()
+	print("removing")
 	for i, active_sprite in ipairs(self.active_sprites) do
+		print(active_sprite.className)
 		if active_sprite:isa(sprite_class) then
 			active_sprite:remove()
 		end

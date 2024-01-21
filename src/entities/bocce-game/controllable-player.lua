@@ -1,5 +1,5 @@
 local gfx <const> = playdate.graphics
-class("ControllablePlayer").extends(BasePlayer)
+class("BocceControllablePlayer").extends(BaseBoccePlayer)
 
 local STATES = {
 	WAITING_FOR_TURN = "WAITING_FOR_TURN",
@@ -10,31 +10,28 @@ local STATES = {
 	READY_TO_THROW = "READY_TO_THROW",
 	THROWING = "THROWING",
 }
-ControllablePlayer.STATES = STATES
+BocceControllablePlayer.STATES = STATES
 
-function ControllablePlayer:init(name, ball_type)
-	ControllablePlayer.super.init(self, name, ball_type)
-	self:setImage(gfx.image.new("images/player-small"))
-	if ball_type:isa(BlackBall) then
-		self:setImage(gfx.image.new("images/other-player-small"))
-	end
-	self:moveTo(40, 100)
+function BocceControllablePlayer:init(ball_type, x, y)
+	BocceControllablePlayer.super.init(self, BasePlayer.TYPES.MAIN, ball_type)
+	self.in_game = true
+	self:moveTo(x, y)
 	self.state = STATES.WAITING_FOR_TURN
 	self.overlay = PositionPhaseOverlay()
 	self.input_meter = PositionMeter(self.x, self.y, self)
 	self:fix_draw_order()
 end
 
-function ControllablePlayer:activate()
-	ControllablePlayer.super.activate(self)
+function BocceControllablePlayer:activate()
+	BocceControllablePlayer.super.activate(self)
 	self.input_meter = PositionMeter(self.x, self.y, self)
 	SpriteManagerSingleton:add(self.input_meter)
 	self.overlay = PositionPhaseOverlay()
 	SpriteManagerSingleton:add(self.overlay)
-	self:next_state(ControllablePlayer.STATES.INPUT_POSITION)
+	self:next_state(BocceControllablePlayer.STATES.INPUT_POSITION)
 end
 
-function ControllablePlayer:reset()
+function BocceControllablePlayer:reset()
 	self.direction = playdate.geometry.vector2D.newPolar(10, 0)
 	self.power = 200
 	self.dir_x = 1
@@ -42,16 +39,16 @@ function ControllablePlayer:reset()
 	self.spin = 0
 end
 
-function ControllablePlayer:next_state(new_state)
-	print("ControllablePlayer.state from " .. self.state .. " to " .. new_state)
+function BocceControllablePlayer:next_state(new_state)
+	print("BocceControllablePlayer.state from " .. self.state .. " to " .. new_state)
 	self.state = new_state
 end
 
-function ControllablePlayer:update()
+function BocceControllablePlayer:update()
 	if self.state == STATES.WAITING_FOR_TURN then
 		return
 	end
-	ControllablePlayer.super.update(self)
+	BocceControllablePlayer.super.update(self)
 	if self.state == STATES.INPUT_POSITION then
 		if playdate.buttonIsPressed(playdate.kButtonLeft) then
 			local new_x = self.x - 1
@@ -130,6 +127,6 @@ function ControllablePlayer:update()
 	end
 end
 
-function ControllablePlayer:is_done()
+function BocceControllablePlayer:is_done()
 	return self.state == STATES.WAITING_FOR_TURN
 end

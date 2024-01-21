@@ -1,29 +1,30 @@
 local gfx <const> = playdate.graphics
 class("BasePlayer").extends(BaseEntity)
 
-function BasePlayer:init(name, ball_type)
+BasePlayer.TYPES = {
+	MAIN = "MAIN",
+	JEFF = "JEFF",
+}
+
+local TYPE_DATA = {
+	[BasePlayer.TYPES.MAIN] = {
+		sprite_sheet = gfx.image.new("images/player-small"),
+		name = "PlayerOne",
+	},
+	[BasePlayer.TYPES.JEFF] = {
+		sprite_sheet = gfx.image.new("images/other-player-small"),
+		name = "Jeff",
+	},
+}
+
+function BasePlayer:init(type)
 	BasePlayer.super.init(self)
-	self.name = name
-	self.ball_type = ball_type
-	self.points = 0
-end
-
-function BasePlayer:update()
-	self:fix_draw_order()
-end
-
-function BasePlayer:deactivate()
-	self:setZIndex(self:getZIndex() - 1)
-end
-
-function BasePlayer:activate()
-	self:setZIndex(self:getZIndex() + 1)
-end
-
-function BasePlayer:is_done()
-	assert(nil, "BasePlayer:is_done must be overwritten")
-end
-
-function BasePlayer:add_points(points)
-	self.points = self.points + points
+	assert(BasePlayer.TYPES[type], tostring(type) .. " not a valid BasePlayer.TYPES")
+	local data = TYPE_DATA[type]
+	assert(data, tostring(type) .. " not found in BasePlayer")
+	self.type = type
+	for k, v in pairs(data) do
+		self[k] = v
+	end
+	self:setImage(self.sprite_sheet)
 end

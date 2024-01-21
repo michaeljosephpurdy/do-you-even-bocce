@@ -1,21 +1,19 @@
-local gfx <const> = playdate.graphics
 local vector2D <const> = playdate.geometry.vector2D
 local timer <const> = playdate.timer
-class("AiPlayer").extends(BasePlayer)
+class("BocceAiPlayer").extends(BaseBoccePlayer)
 
-function AiPlayer:init(name, ball_type)
-	AiPlayer.super.init(self, name, ball_type)
-	self:setImage(gfx.image.new("images/other-player-small"))
-	self:moveTo(40, 132)
+function BocceAiPlayer:init(type, x, y, ball_type)
+	BocceAiPlayer.super.init(self, type, ball_type)
+	self:moveTo(x, y)
 	self.offset = 15
 	self:fix_draw_order()
 end
 
-function AiPlayer:update()
+function BocceAiPlayer:update()
 	if not self.active then
 		return
 	end
-	AiPlayer.super.update(self)
+	BocceAiPlayer.super.update(self)
 	if self.thrown_ball then
 		return
 	end
@@ -42,13 +40,14 @@ function calculate_power(self)
 	return difference:magnitude() * 4
 end
 
-function AiPlayer:deactivate()
-	AiPlayer.super.deactivate(self)
+function BocceAiPlayer:deactivate()
+	BocceAiPlayer.super.deactivate(self)
 	self.active = false
 end
 
-function AiPlayer:activate()
-	AiPlayer.super.activate(self)
+function BocceAiPlayer:activate()
+	BocceAiPlayer.super.activate(self)
+	self.in_game = true
 	self.active = true
 	self.thrown_ball = nil
 	timer.performAfterDelay(math.random(500, 2000), function()
@@ -62,6 +61,6 @@ function AiPlayer:activate()
 	end)
 end
 
-function AiPlayer:is_done()
+function BocceAiPlayer:is_done()
 	return self.thrown_ball and self.thrown_ball:is_done()
 end

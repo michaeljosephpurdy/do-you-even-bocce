@@ -15,25 +15,28 @@ function BocceGameScene:init()
 	print("BocceGameScene.init")
 end
 
-function BocceGameScene:setup()
+function BocceGameScene:setup(payload)
 	self.state = STATES.PLAYING
 	self.turn_manager = BocceGameTurnManager(8)
 	self.thrown_balls = {}
-	local ai_player = AiPlayer("player two", BlackBall)
-	ai_player.on_throw = function(ball)
+	self.ai_player = BocceAiPlayer(payload.ai_player.type, payload.ai_player.x, payload.ai_player.y, BlackBall)
+	self.ai_player.on_throw = function(ball)
 		table.insert(self.thrown_balls, ball)
 	end
-	self.turn_manager:add(ai_player)
+	self.turn_manager:add(self.ai_player)
 
-	local controllable_player = ControllablePlayer("player one", WhiteBall)
-	controllable_player.on_throw = function(ball)
+	for k, v in pairs(payload.player) do
+		print(k)
+		print(v)
+	end
+	self.controllable_player = BocceControllablePlayer(WhiteBall, payload.player.x, payload.player.y)
+	self.controllable_player.on_throw = function(ball)
 		table.insert(self.thrown_balls, ball)
 	end
-	self.turn_manager:add(controllable_player)
+	self.turn_manager:add(self.controllable_player)
 
 	self.jack_ball = JackBall(math.random(150, 350), math.random(50, 150))
 	self.turn_manager:add(self.jack_ball)
-	SpriteManagerSingleton:add(self.jack_ball)
 end
 
 function BocceGameScene:update()
@@ -46,7 +49,9 @@ function BocceGameScene:update()
 		end
 	elseif self.state == STATES.SCORING then
 		self.score_manager:update()
-		if self.score_manager:is_done() then
+		if self.score_manager:is_done() and playdate.buttonJustReleased(playdate.kButtonB) then
+			self.jack_ball:remove()
+			SceneManagerSingleton:next_state(OverworldScene)
 		end
 	end
 	playdate.timer.updateTimers()
@@ -54,5 +59,19 @@ function BocceGameScene:update()
 end
 
 function BocceGameScene:destroy()
-	SpriteManagerSingleton:lazy_remove_all()
+	SpriteManagerSingleton:remove_all()
+end
+
+function BocceGameScene:build_payload()
+	-- TODO: return everything to set the OverworldScene back up
+	return {
+		player = {
+			x = self.controllable_player.x,
+			y = self.controllable_player.y,
+		},
+		ai_player = {
+			x = self.ai_player.x,
+			y = self.ai_player.y,
+		},
+	}
 end

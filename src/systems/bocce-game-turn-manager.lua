@@ -17,6 +17,7 @@ function BocceGameTurnManager:add(entity)
 		for _, player in pairs(self.players) do
 			player.jack_ball = entity
 		end
+		SpriteManagerSingleton:add(entity)
 	end
 end
 

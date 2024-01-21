@@ -26,15 +26,19 @@ function SceneManager:next_state(state)
 	local found = false
 	for _, existing_state in pairs(self.states) do
 		if existing_state.className == state.className then
+			state = existing_state
 			found = true
 		end
 	end
 	assert(found, "cannot transition to unknown state: " .. state.className)
 	self.previous_state = self.state
+	local payload = {}
 	if self.previous_state then
+		payload = self.previous_state:build_payload()
+		payload.source = self.previous_state.className
 		self.previous_state:destroy()
 	end
 	self.state = state
-	self.state:setup()
+	self.state:setup(payload)
 	print("SceneManager transitioned to " .. self.state.className)
 end
