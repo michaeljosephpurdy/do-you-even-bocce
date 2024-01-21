@@ -36,7 +36,13 @@ function BocceGameScene:setup(payload)
 	self.turn_manager:add(self.controllable_player)
 
 	self.jack_ball = JackBall(math.random(150, 350), math.random(50, 150))
+	self.jack_ball.x = self.jack_ball.x + self.controllable_player.x
+	self.jack_ball.y = self.jack_ball.y + self.controllable_player.y
 	self.turn_manager:add(self.jack_ball)
+	CameraSingleton:target_centered(
+		self.jack_ball.x - self.controllable_player.x,
+		self.jack_ball.y - self.controllable_player.y
+	)
 end
 
 function BocceGameScene:update()
@@ -54,8 +60,8 @@ function BocceGameScene:update()
 			SceneManagerSingleton:next_state(OverworldScene)
 		end
 	end
+	CameraSingleton:update()
 	playdate.timer.updateTimers()
-	playdate.drawFPS(10, 220)
 end
 
 function BocceGameScene:destroy()

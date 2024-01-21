@@ -1,5 +1,7 @@
 import("CoreLibs/animator")
 import("CoreLibs/easing")
+import("CoreLibs/graphics")
+import("CoreLibs/math")
 import("CoreLibs/object")
 -- add mixin support to CoreLibs/object
 function Object:implements(...)
@@ -14,8 +16,6 @@ function Object:implements(...)
 		end
 	end
 end
-
-import("CoreLibs/graphics")
 import("CoreLibs/sprites")
 import("CoreLibs/timer")
 import("CoreLibs/ui")
@@ -31,6 +31,7 @@ import("entities/base-player")
 import("entities/bocce-game/base-meter")
 import("entities/bocce-game/base-player")
 
+import("systems/camera")
 import("systems/world-loader")
 import("systems/sprite-manager")
 import("systems/scene-manager")
@@ -55,6 +56,7 @@ function init()
 	SpriteManagerSingleton = SpriteManager()
 	SceneManagerSingleton = SceneManager()
 	TileMapManagerSingleton = TileMapManager()
+	CameraSingleton = CameraSystem()
 	SceneManagerSingleton:add_state(BocceGameScene())
 	SceneManagerSingleton:add_state(OverworldScene())
 	--SceneManagerSingleton:next_state(BocceGameScene)

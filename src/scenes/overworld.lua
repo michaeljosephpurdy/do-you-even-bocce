@@ -30,6 +30,7 @@ end
 
 function OverworldScene:update()
 	SpriteManagerSingleton:update()
+	CameraSingleton:update()
 	playdate.timer.updateTimers()
 end
 
