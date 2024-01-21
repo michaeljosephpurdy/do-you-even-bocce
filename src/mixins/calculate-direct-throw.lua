@@ -1,3 +1,6 @@
+local vector2D <const> = playdate.geometry.vector2D
+class("CalculateDirectThrowMixin").extends()
+
 local function calculate_direction(self, offset)
 	local self_vector = vector2D.new(self.x, self.y)
 	local jack_ball_vector = vector2D.new(self.jack_ball.x, self.jack_ball.y)
