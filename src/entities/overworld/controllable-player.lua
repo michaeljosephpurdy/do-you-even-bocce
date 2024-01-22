@@ -24,6 +24,7 @@ function OverworldControllablePlayer:update()
 		local new_y = self.y + 2
 		self:moveTo(self.x, new_y)
 	end
+	CameraSingleton:target_centered(self.x, self.y)
 	for _, other in ipairs(self:overlappingSprites()) do
 		self.target = other
 	end

@@ -5,6 +5,7 @@ class("WorldLoaderSystem").extends()
 WorldLoaderSystem.singleton = true
 
 WorldLoaderSystem.EVENTS = {
+	LOAD_LEVEL = "LOAD_LEVEL",
 	LOAD_LAYER = "LOAD_LAYER",
 	LOAD_ENTITY = "LOAD_ENTITY",
 }
@@ -69,6 +70,16 @@ end
 
 function WorldLoaderSystem:load(level_id)
 	local level = decode_level(level_id)
+	for _, subscription in ipairs(self.subscriptions[WorldLoaderSystem.EVENTS.LOAD_LEVEL]) do
+		subscription({
+			x = level.x,
+			y = level.y,
+			width = level.width,
+			height = level.height,
+			xx = level.x + level.width,
+			yy = level.y + level.height,
+		})
+	end
 	for _, layer in ipairs(level.layers) do
 		for _, subscription in ipairs(self.subscriptions[WorldLoaderSystem.EVENTS.LOAD_LAYER]) do
 			subscription({

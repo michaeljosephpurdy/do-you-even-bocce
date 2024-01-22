@@ -1424,7 +1424,7 @@
 						},
 						{
 							"__identifier": "BocceBallPlayer",
-							"__grid": [9,6],
+							"__grid": [17,10],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": null,
@@ -1433,13 +1433,13 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 146,
-							"px": [144,96],
+							"px": [272,160],
 							"fieldInstances": [{ "__identifier": "BoccePlayers", "__type": "LocalEnum.BoccePlayers", "__value": "JEFF", "__tile": null, "defUid": 148, "realEditorValues": [{
 								"id": "V_String",
 								"params": ["JEFF"]
 							}] }],
-							"__worldX": 144,
-							"__worldY": 96
+							"__worldX": 272,
+							"__worldY": 160
 						}
 					]
 				},
