@@ -35,14 +35,9 @@ function BocceGameScene:setup(payload)
 	end
 	self.turn_manager:add(self.controllable_player)
 
-	self.jack_ball = JackBall(math.random(150, 350), math.random(50, 150))
-	self.jack_ball.x = self.jack_ball.x + self.controllable_player.x
-	self.jack_ball.y = self.jack_ball.y + self.controllable_player.y
+	self.jack_ball = JackBall(payload.player.x + math.random(150, 350), payload.player.y + math.random(50, 150))
 	self.turn_manager:add(self.jack_ball)
-	CameraSingleton:target_centered(
-		self.jack_ball.x - self.controllable_player.x,
-		self.jack_ball.y - self.controllable_player.y
-	)
+	CameraSingleton:target_centered(self.jack_ball.x, self.jack_ball.y)
 end
 
 function BocceGameScene:update()

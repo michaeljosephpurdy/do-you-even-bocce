@@ -26,23 +26,25 @@ function CameraSystem:update()
 	local new_y = self.target_y
 	if new_x <= self.min_x then
 		new_x = self.min_x
-	elseif new_x >= self.max_x then
-		new_x = self.max_x
+	elseif new_x >= self.max_x - 400 then
+		new_x = self.max_x - 400
 	end
 	if new_y <= self.min_y then
 		new_y = self.min_y
-	elseif new_y >= self.max_y then
-		new_y = self.max_y
+	elseif new_y >= self.max_y - 240 then
+		new_y = self.max_y - 240
 	end
-	self.x = lerp(old_x, new_x, 3 * DELTA_TIME)
-	self.y = lerp(old_y, new_y, 3 * DELTA_TIME)
+	self.x = lerp(old_x, new_x, self.lerp_factor * DELTA_TIME)
+	self.y = lerp(old_y, new_y, self.lerp_factor * DELTA_TIME)
 	setDrawOffset(-self.x, -self.y)
 end
 
-function CameraSystem:target(x, y)
+function CameraSystem:target(x, y, lerp_factor)
+	self.lerp_factor = lerp_factor or 3
 	self.target_x, self.target_y = x, y
 end
 
-function CameraSystem:target_centered(x, y)
+function CameraSystem:target_centered(x, y, lerp_factor)
+	self.lerp_factor = lerp_factor or 3
 	self.target_x, self.target_y = x - 200, y - 120
 end
