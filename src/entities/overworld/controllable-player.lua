@@ -5,7 +5,7 @@ function OverworldControllablePlayer:init(x, y)
 	OverworldControllablePlayer.super.init(self, BasePlayer.TYPES.MAIN)
 	self:moveTo(x, y)
 	self:setZIndex(2)
-	self:setCollideRect(-8, 0, self.width + 16, self.height)
+	self:setCollideRect(6, self.height - self.height / 4, self.width - 12, self.height / 4)
 end
 
 function OverworldControllablePlayer:update()
@@ -24,7 +24,7 @@ function OverworldControllablePlayer:update()
 		local new_y = self.y + 2
 		self:moveTo(self.x, new_y)
 	end
-	CameraSingleton:target_centered(self.x, self.y)
+	CameraSingleton:target_centered(self.x, self.y, 5)
 	for _, other in ipairs(self:overlappingSprites()) do
 		self.target = other
 	end
