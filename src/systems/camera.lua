@@ -45,6 +45,15 @@ function CameraSystem:target(x, y, lerp_factor)
 end
 
 function CameraSystem:target_centered(x, y, lerp_factor)
-	self.lerp_factor = lerp_factor or 3
-	self.target_x, self.target_y = x - 200, y - 120
+	self:target(x - 200, y - 120, lerp_factor)
+end
+
+function CameraSystem:target_sprite_centered(sprite, lerp_factor)
+	self:target_centered(sprite.x, sprite.y, lerp_factor)
+end
+
+function CameraSystem:target_between_sprites_centered(sprite, other_sprite, lerp_factor)
+	local diff_x = sprite.x + (other_sprite.x - sprite.x) / 2
+	local diff_y = sprite.y + (other_sprite.y - sprite.y) / 2
+	self:target_centered(diff_x, diff_y, lerp_factor)
 end

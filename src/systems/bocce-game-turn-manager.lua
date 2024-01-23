@@ -35,12 +35,6 @@ local function determine_new_player(self)
 end
 
 function BocceGameTurnManager:update()
-	if self.jack_ball then
-		CameraSingleton:target_centered(
-			self.active_player.x + (self.jack_ball.x - self.active_player.x) / 2,
-			self.active_player.y + (self.jack_ball.y - self.active_player.y) / 2
-		)
-	end
 	if self.game_over then
 		return
 	end

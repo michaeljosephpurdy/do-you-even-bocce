@@ -7,6 +7,8 @@ function PhaseOverlay:init()
 	self:setCenter(0, 0)
 	self:moveTo(0, -self.height)
 	self.animation = playdate.graphics.animator.new(1000, self.y, 0, playdate.easingFunctions.outQuad)
+	self:setIgnoresDrawOffset(true)
+	self:setZIndex(32000)
 end
 
 function PhaseOverlay:update()

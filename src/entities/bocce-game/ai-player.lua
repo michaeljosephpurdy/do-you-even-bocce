@@ -22,6 +22,7 @@ end
 
 function BocceAiPlayer:deactivate()
 	BocceAiPlayer.super.deactivate(self)
+	self.thrown_ball = nil
 	self.active = false
 end
 
@@ -29,7 +30,6 @@ function BocceAiPlayer:activate()
 	BocceAiPlayer.super.activate(self)
 	self.in_game = true
 	self.active = true
-	self.thrown_ball = nil
 
 	timer.performAfterDelay(math.random(500, 2000), function()
 		local dir_x, dir_y, power, spin = self:calculate_direct_throw(self.offset)
