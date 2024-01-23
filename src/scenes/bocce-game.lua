@@ -25,10 +25,6 @@ function BocceGameScene:setup(payload)
 	end
 	self.turn_manager:add(self.ai_player)
 
-	for k, v in pairs(payload.player) do
-		print(k)
-		print(v)
-	end
 	self.controllable_player = BocceControllablePlayer(WhiteBall, payload.player.x, payload.player.y)
 	self.controllable_player.on_throw = function(ball)
 		table.insert(self.thrown_balls, ball)
@@ -37,11 +33,22 @@ function BocceGameScene:setup(payload)
 
 	self.jack_ball = JackBall(payload.player.x + math.random(150, 350), payload.player.y + math.random(50, 150))
 	self.turn_manager:add(self.jack_ball)
-	CameraSingleton:target_centered(self.jack_ball.x, self.jack_ball.y)
+	CameraSingleton:target_sprite_centered(self.jack_ball)
 end
 
 function BocceGameScene:update()
 	if self.state == STATES.PLAYING then
+		if playdate.buttonIsPressed(playdate.kButtonB) then
+			CameraSingleton:target_sprite_centered(self.jack_ball)
+		elseif self.turn_manager.active_player.thrown_ball then
+			CameraSingleton:target_between_sprites_centered(
+				self.turn_manager.active_player.thrown_ball,
+				self.jack_ball,
+				1.5
+			)
+		else
+			CameraSingleton:target_between_sprites_centered(self.turn_manager.active_player, self.jack_ball)
+		end
 		self.turn_manager:update()
 		SpriteManagerSingleton:update()
 		if self.turn_manager:is_done() then

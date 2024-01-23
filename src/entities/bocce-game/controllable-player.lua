@@ -122,6 +122,7 @@ function BocceControllablePlayer:update()
 	elseif self.state == STATES.THROWING then
 		if self.thrown_ball:is_done() then
 			self:next_state(STATES.WAITING_FOR_TURN)
+			self.thrown_ball = nil
 		end
 	end
 end
