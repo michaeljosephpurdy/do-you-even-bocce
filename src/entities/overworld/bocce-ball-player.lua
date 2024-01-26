@@ -5,21 +5,20 @@ function OverworldBocceBallPlayer:init(type, x, y)
 	OverworldBocceBallPlayer.super.init(self, type)
 	self:moveTo(x, y)
 	self:setCollideRect(-8, self.height - self.height / 2, self.width + 16, self.height / 2)
-	self.speak_icon = SpeakIcon(x - self.width, y - self.height)
-	self.speak_icon:setZIndex(self:getZIndex())
-	self.speak_icon:add()
+	self.icon = SpeakIcon(x - self.width, y - self.height)
+	self.icon:setZIndex(Z_INDEXES.ICONS)
+	self.icon:add()
 end
 
 function OverworldBocceBallPlayer:remove()
-	self.speak_icon:remove()
+	self.icon:remove()
 	OverworldBocceBallPlayer.super.remove(self)
 end
 
 function OverworldBocceBallPlayer:update()
 	OverworldBocceBallPlayer.super.update(self)
-	self.speak_icon:setZIndex(self:getZIndex())
-	self.speak_icon:setVisible(false)
+	self.icon:setVisible(false)
 	if self:collides_with_player() then
-		self.speak_icon:setVisible(true)
+		self.icon:setVisible(true)
 	end
 end

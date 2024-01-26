@@ -7,7 +7,12 @@ function TileMapManager:init()
 		SpriteManagerSingleton:add(layer_sprite)
 	end)
 	WorldLoaderSingleton:subscribe(WorldLoaderSystem.EVENTS.LOAD_TILE, function(payload)
-		local tile = FlatTile(payload.x, payload.y, payload.z_index_offset, payload.image_number, payload.collider)
-		SpriteManagerSingleton:add(tile)
+		if payload.collider then
+			local tile = ColliderTile(payload.x, payload.y, payload.z_index_offset, payload.image_number)
+			SpriteManagerSingleton:add(tile)
+		else
+			local tile = BaseTile(payload.x, payload.y, payload.z_index_offset, payload.image_number)
+			SpriteManagerSingleton:add(tile)
+		end
 	end)
 end

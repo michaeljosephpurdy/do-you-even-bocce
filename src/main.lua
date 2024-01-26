@@ -22,6 +22,7 @@ import("mixins/trigger-by-player")
 import("mixins/calculate-direct-throw")
 import("mixins/ball-throwing")
 import("mixins/pub-sub")
+import("mixins/bouncing-icon")
 -- base classes
 import("scenes/base-scene")
 import("entities/base-entity")
@@ -49,11 +50,18 @@ import("entities/bocce-game/controllable-player")
 import("entities/bocce-game/ai-player")
 import("entities/overworld/controllable-player")
 import("entities/overworld/bocce-ball-player")
-import("entities/icons/speak-icon")
+import("entities/icon")
+import("entities/door")
+import("entities/sign")
 
+Z_INDEXES = {
+	UI = 32767,
+	ICONS = 32766,
+	METERS = 32765,
+}
 COLLIDER_TAGS = {
 	PLAYER = 1,
-	WALL = 2,
+	OBSTACLE = 2,
 	TRIGGER = 3,
 	BALL = 4,
 }

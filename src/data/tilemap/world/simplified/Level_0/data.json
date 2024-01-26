@@ -17,45 +17,58 @@
 		"DecorationTiles_Upper.png"
 	],
 	"entities": {
-		"BocceBallPlayer": [
+		"Sign": [
 			{
-				"id": "BocceBallPlayer",
-				"iid": "01d1d670-b0a0-11ee-9798-8da997b4e76c",
+				"id": "Sign",
+				"iid": "2a96f3c0-b0a0-11ee-9798-6766b4ede457",
 				"layer": "Entities",
-				"x": 768,
+				"x": 720,
 				"y": 208,
-				"width": 16,
-				"height": 16,
-				"color": 9568256,
-				"customFields": {
-					"BoccePlayers": "JEFF"
-				}
-			}
-		],
-		"MainCharacter": [
-			{
-				"id": "MainCharacter",
-				"iid": "d1ce7610-b0a0-11ee-9798-b11ed3a8735f",
-				"layer": "Entities",
-				"x": 608,
-				"y": 192,
-				"width": 16,
-				"height": 16,
-				"color": 2434341,
+				"width": 32,
+				"height": 32,
+				"color": 0,
 				"customFields" : {}
 			}
 		],
 		"Door": [
 			{
 				"id": "Door",
-				"iid": "d2e898a0-b0a0-11ee-9798-494c286a1379",
+				"iid": "3a8a8260-b0a0-11ee-9798-bf4682f8d715",
 				"layer": "Entities",
-				"x": 768,
-				"y": 128,
+				"x": 784,
+				"y": 144,
 				"width": 32,
 				"height": 32,
 				"color": 16777215,
 				"customFields" : {}
+			}
+		],
+		"MainCharacter": [
+			{
+				"id": "MainCharacter",
+				"iid": "40e62a10-b0a0-11ee-9798-ab24ff8ac606",
+				"layer": "Entities",
+				"x": 592,
+				"y": 176,
+				"width": 32,
+				"height": 32,
+				"color": 2434341,
+				"customFields" : {}
+			}
+		],
+		"BocceBallPlayer": [
+			{
+				"id": "BocceBallPlayer",
+				"iid": "42db1c40-b0a0-11ee-9798-ad4cd7924e43",
+				"layer": "Entities",
+				"x": 784,
+				"y": 208,
+				"width": 32,
+				"height": 32,
+				"color": 9568256,
+				"customFields": {
+					"BoccePlayers": "JEFF"
+				}
 			}
 		]
 	}
