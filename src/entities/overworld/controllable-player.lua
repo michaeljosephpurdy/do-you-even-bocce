@@ -10,26 +10,24 @@ end
 
 function OverworldControllablePlayer:update()
 	OverworldControllablePlayer.super.update(self)
+	local goal_x, goal_y = self.x, self.y
 	if playdate.buttonIsPressed(playdate.kButtonLeft) then
-		local new_x = self.x - 2
-		self:moveTo(new_x, self.y)
+		goal_x = goal_x - 2
 	elseif playdate.buttonIsPressed(playdate.kButtonRight) then
-		local new_x = self.x + 2
-		self:moveTo(new_x, self.y)
+		goal_x = goal_x + 2
 	end
 	if playdate.buttonIsPressed(playdate.kButtonUp) then
-		local new_y = self.y - 2
-		self:moveTo(self.x, new_y)
+		goal_y = goal_y - 2
 	elseif playdate.buttonIsPressed(playdate.kButtonDown) then
-		local new_y = self.y + 2
-		self:moveTo(self.x, new_y)
+		goal_y = goal_y + 2
 	end
+	local actualX, actualY, collisions, numberOfCollisions = self:moveWithCollisions(goal_x, goal_y)
+
 	CameraSingleton:target_sprite_centered(self, 5)
 	for _, other in ipairs(self:overlappingSprites()) do
 		self.target = other
 	end
 	if self.target and playdate.buttonJustReleased(playdate.kButtonA) then
-		print("here")
 		SceneManagerSingleton:next_state(BocceGameScene)
 	end
 	self.target = nil

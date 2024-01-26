@@ -9,6 +9,7 @@ images:
 		#png_file = ${$$file,aseprite,png} ;\
 	#done
 	aseprite -b assets/images/player-small.aseprite --save-as src/images/player-small.png
+	aseprite -b assets/images/tileset.aseprite --save-as src/images/tileset-table-32-32.png
 	aseprite -b assets/images/other-player-small.aseprite --save-as src/images/other-player-small.png
 	aseprite -b assets/images/player.aseprite --save-as src/images/player.png
 	aseprite -b assets/images/player.aseprite --save-as src/images/player.png

@@ -12,7 +12,6 @@ BocceGameScene.STATES = STATES
 
 function BocceGameScene:init()
 	BocceGameScene.super.init(self)
-	print("BocceGameScene.init")
 end
 
 function BocceGameScene:setup(payload)

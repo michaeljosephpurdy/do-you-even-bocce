@@ -6,10 +6,7 @@ import("CoreLibs/object")
 -- add mixin support to CoreLibs/object
 function Object:implements(...)
 	for _, cls in pairs({ ... }) do
-		print(cls)
 		for k, v in pairs(cls) do
-			print(k)
-			print(v)
 			if self[k] == nil and type(v) == "function" then
 				self[k] = v
 			end
@@ -39,6 +36,7 @@ import("systems/scene-manager")
 import("systems/tilemap-manager")
 import("scenes/bocce-game")
 import("scenes/overworld")
+import("entities/flat-tile")
 import("entities/background")
 import("entities/bocce-game/ball")
 import("entities/bocce-game/phase-overlay")
