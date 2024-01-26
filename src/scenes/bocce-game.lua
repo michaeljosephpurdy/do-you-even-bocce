@@ -66,6 +66,8 @@ function BocceGameScene:update()
 end
 
 function BocceGameScene:destroy()
+	SpriteManagerSingleton:remove(self.controllable_player)
+	SpriteManagerSingleton:remove(self.ai_player)
 	SpriteManagerSingleton:remove_all()
 end
 

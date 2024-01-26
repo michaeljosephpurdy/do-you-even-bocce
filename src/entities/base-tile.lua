@@ -10,5 +10,3 @@ function BaseTile:init(x, y, z_index_offset, image_number)
 	self:setCenter(0, 0)
 	self:setZIndex(y + (z_index_offset or 0))
 end
-
-function BaseTile:collides_with(other) end

@@ -11,6 +11,7 @@ class("BlackGrayBall").extends(Ball)
 
 function Ball:init(x, y, radius, props)
 	Ball.super.init(self)
+	self:setTag(COLLIDER_TAGS.BALL)
 	self.radius = radius
 	self.diameter = self.radius * 2
 	self.shadow_offset = self.radius / 3
@@ -54,7 +55,18 @@ function Ball:init(x, y, radius, props)
 	self.spin = zero_vector
 end
 
+function Ball:collisionResponse(other)
+	local other_tag = other:getTag()
+	if other_tag == COLLIDER_TAGS.OBSTACLE then
+		return playdate.graphics.sprite.kCollisionTypeBounce
+	elseif other_tag == COLLIDER_TAGS.BALL then
+		return playdate.graphics.sprite.kCollisionTypeBounce
+	end
+	return playdate.graphics.sprite.kCollisionTypeOverlap
+end
+
 function Ball:update()
+	-- if ball is close to stopping, just stop it now
 	if
 		(self.velocity_vector.x <= 0.5 and self.velocity_vector.x >= -0.5)
 		and (self.velocity_vector.y <= 0.5 and self.velocity_vector.y >= -0.5)
@@ -69,9 +81,31 @@ function Ball:update()
 	end
 	self.velocity_vector = self.velocity_vector * self.friction
 	self.position = self.position + ((self.velocity_vector + self.spin) * DELTA_TIME)
-	self:moveTo(self.position.x, self.position.y)
+	local actual_x, actual_y, collisions, number_of_collisions =
+		self:moveWithCollisions(self.position.x, self.position.y)
+	self.position.x = actual_x
+	self.position.y = actual_y
 	self.ball_x = self.x + self.width / 2
 	self.ball_y = self.y + self.height - self.diameter
+	for i = 1, number_of_collisions do
+		print("collision")
+		local collision = collisions[i]
+		local collided_sprite = collision.other
+		local collision_normal = collision.normal
+		local collision_tag = collided_sprite:getTag()
+		print("collision")
+		if collision_tag == COLLIDER_TAGS.BALL then
+			self:collides_with(collided_sprite)
+		elseif collision_tag == COLLIDER_TAGS.OBSTACLE then
+			if collision_normal.x ~= 0 then
+				self.velocity_vector.x = self.velocity_vector.x * collision_normal.x * self.friction
+			end
+			if collision_normal.y ~= 0 then
+				self.velocity_vector.y = self.velocity_vector.y * collision_normal.y * self.friction
+			end
+			return
+		end
+	end
 end
 
 function Ball:draw()
@@ -117,18 +151,12 @@ function Ball:is_done()
 end
 
 function Ball:collides_with(other)
-	if not other:isa(Ball) then
-		return false
-	end
 	if self:check_collision_with_ball(other) then
 		self:collide_with_ball(other)
 	end
 end
 
 function Ball:check_collision_with_ball(other)
-	if not other:isa(Ball) then
-		return false
-	end
 	local max_distance = self.radius + other.radius
 	local distance_squared = (other.ball_x - self.ball_x) * (other.ball_x - self.ball_x)
 		+ (other.ball_y - self.ball_y) * (other.ball_y - self.ball_y)

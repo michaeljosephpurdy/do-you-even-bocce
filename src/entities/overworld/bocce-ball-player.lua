@@ -22,3 +22,7 @@ function OverworldBocceBallPlayer:update()
 		self.icon:setVisible(true)
 	end
 end
+
+function OverworldBocceBallPlayer:trigger()
+	SceneManagerSingleton:next_state(BocceGameScene)
+end
