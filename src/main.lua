@@ -26,6 +26,7 @@ import("mixins/pub-sub")
 import("scenes/base-scene")
 import("entities/base-entity")
 import("entities/base-player")
+import("entities/base-tile")
 import("entities/bocce-game/base-meter")
 import("entities/bocce-game/base-player")
 
@@ -36,7 +37,7 @@ import("systems/scene-manager")
 import("systems/tilemap-manager")
 import("scenes/bocce-game")
 import("scenes/overworld")
-import("entities/flat-tile")
+import("entities/collider-tile")
 import("entities/background")
 import("entities/bocce-game/ball")
 import("entities/bocce-game/phase-overlay")
@@ -50,6 +51,12 @@ import("entities/overworld/controllable-player")
 import("entities/overworld/bocce-ball-player")
 import("entities/icons/speak-icon")
 
+COLLIDER_TAGS = {
+	PLAYER = 1,
+	WALL = 2,
+	TRIGGER = 3,
+	BALL = 4,
+}
 function init()
 	WorldLoaderSingleton = WorldLoaderSystem()
 	SpriteManagerSingleton = SpriteManager()
