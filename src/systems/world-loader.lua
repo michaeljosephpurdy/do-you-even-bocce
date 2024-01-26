@@ -2,6 +2,7 @@ local file <const> = playdate.file
 local BASE_PATH = "data/tilemap/world/simplified/"
 
 class("WorldLoaderSystem").extends()
+WorldLoaderSystem:implements(PubSubMixin)
 WorldLoaderSystem.singleton = true
 
 WorldLoaderSystem.EVENTS = {
@@ -70,27 +71,21 @@ end
 
 function WorldLoaderSystem:load(level_id)
 	local level = decode_level(level_id)
-	for _, subscription in ipairs(self.subscriptions[WorldLoaderSystem.EVENTS.LOAD_LEVEL]) do
-		subscription({
-			x = level.x,
-			y = level.y,
-			width = level.width,
-			height = level.height,
-			xx = level.x + level.width,
-			yy = level.y + level.height,
+	self:publish(WorldLoaderSystem.EVENTS.LOAD_LEVEL, {
+		x = level.x,
+		y = level.y,
+		width = level.width,
+		height = level.height,
+		xx = level.x + level.width,
+		yy = level.y + level.height,
+	})
+	for _, layer in ipairs(level.layers) do
+		self:publish(WorldLoaderSystem.EVENTS.LOAD_LAYER, {
+			image_path = layer,
+			level_id = level.id,
 		})
 	end
-	for _, layer in ipairs(level.layers) do
-		for _, subscription in ipairs(self.subscriptions[WorldLoaderSystem.EVENTS.LOAD_LAYER]) do
-			subscription({
-				image_path = layer,
-				level_id = level.id,
-			})
-		end
-	end
 	for _, entity in ipairs(level.entities) do
-		for _, subscription in ipairs(self.subscriptions[WorldLoaderSystem.EVENTS.LOAD_ENTITY]) do
-			subscription(entity)
-		end
+		self:publish(WorldLoaderSystem.EVENTS.LOAD_ENTITY, entity)
 	end
 end

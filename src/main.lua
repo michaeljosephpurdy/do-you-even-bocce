@@ -24,6 +24,7 @@ import("mixins/with-player")
 import("mixins/trigger-by-player")
 import("mixins/calculate-direct-throw")
 import("mixins/ball-throwing")
+import("mixins/pub-sub")
 -- base classes
 import("scenes/base-scene")
 import("entities/base-entity")
