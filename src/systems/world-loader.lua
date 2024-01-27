@@ -134,6 +134,10 @@ end
 function WorldLoaderSystem:load(level_id)
 	local level = self.world.levels[level_id]
 	self:publish(WorldLoaderSystem.EVENTS.LOAD_LEVEL, level)
+	if self.loaded_level == level.id then
+		return
+	end
+	self.loaded_level = level.id
 	for _, tile in ipairs(level.tiles) do
 		self:publish(WorldLoaderSystem.EVENTS.LOAD_TILE, tile)
 	end

@@ -68,7 +68,7 @@ end
 function BocceGameScene:destroy()
 	SpriteManagerSingleton:remove(self.controllable_player)
 	SpriteManagerSingleton:remove(self.ai_player)
-	SpriteManagerSingleton:remove_all()
+	SpriteManagerSingleton:remove_all_of_type(Ball)
 end
 
 function BocceGameScene:build_payload()
