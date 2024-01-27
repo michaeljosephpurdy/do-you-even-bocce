@@ -6,10 +6,7 @@ import("CoreLibs/object")
 -- add mixin support to CoreLibs/object
 function Object:implements(...)
 	for _, cls in pairs({ ... }) do
-		print(cls)
 		for k, v in pairs(cls) do
-			print(k)
-			print(v)
 			if self[k] == nil and type(v) == "function" then
 				self[k] = v
 			end
@@ -25,10 +22,12 @@ import("mixins/trigger-by-player")
 import("mixins/calculate-direct-throw")
 import("mixins/ball-throwing")
 import("mixins/pub-sub")
+import("mixins/bouncing-icon")
 -- base classes
 import("scenes/base-scene")
 import("entities/base-entity")
 import("entities/base-player")
+import("entities/base-tile")
 import("entities/bocce-game/base-meter")
 import("entities/bocce-game/base-player")
 
@@ -39,6 +38,7 @@ import("systems/scene-manager")
 import("systems/tilemap-manager")
 import("scenes/bocce-game")
 import("scenes/overworld")
+import("entities/collider-tile")
 import("entities/background")
 import("entities/bocce-game/ball")
 import("entities/bocce-game/phase-overlay")
@@ -50,8 +50,21 @@ import("entities/bocce-game/controllable-player")
 import("entities/bocce-game/ai-player")
 import("entities/overworld/controllable-player")
 import("entities/overworld/bocce-ball-player")
-import("entities/icons/speak-icon")
+import("entities/icon")
+import("entities/door")
+import("entities/sign")
 
+Z_INDEXES = {
+	UI = 32767,
+	ICONS = 32766,
+	METERS = 32765,
+}
+COLLIDER_TAGS = {
+	PLAYER = 1,
+	OBSTACLE = 2,
+	TRIGGER = 3,
+	BALL = 4,
+}
 function init()
 	WorldLoaderSingleton = WorldLoaderSystem()
 	SpriteManagerSingleton = SpriteManager()

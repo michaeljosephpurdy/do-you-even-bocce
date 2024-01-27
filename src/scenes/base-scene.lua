@@ -1,7 +1,7 @@
 class("BaseScene").extends()
 
 function BaseScene:init()
-	print("BaseScene.init")
+	-- BaseScene.init
 end
 
 function BaseScene:destroy()

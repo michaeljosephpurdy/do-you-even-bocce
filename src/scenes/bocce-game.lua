@@ -12,7 +12,6 @@ BocceGameScene.STATES = STATES
 
 function BocceGameScene:init()
 	BocceGameScene.super.init(self)
-	print("BocceGameScene.init")
 end
 
 function BocceGameScene:setup(payload)
@@ -67,6 +66,8 @@ function BocceGameScene:update()
 end
 
 function BocceGameScene:destroy()
+	SpriteManagerSingleton:remove(self.controllable_player)
+	SpriteManagerSingleton:remove(self.ai_player)
 	SpriteManagerSingleton:remove_all()
 end
 

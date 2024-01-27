@@ -1,5 +1,6 @@
 local file <const> = playdate.file
-local BASE_PATH = "data/tilemap/world/simplified/"
+local PATH = "data/tilemap/"
+local BASE_PATH = PATH .. "world/simplified/"
 
 class("WorldLoaderSystem").extends()
 WorldLoaderSystem:implements(PubSubMixin)
@@ -9,6 +10,7 @@ WorldLoaderSystem.EVENTS = {
 	LOAD_LEVEL = "LOAD_LEVEL",
 	LOAD_LAYER = "LOAD_LAYER",
 	LOAD_ENTITY = "LOAD_ENTITY",
+	LOAD_TILE = "LOAD_TILE",
 }
 
 local function decode_json(file_path)
@@ -30,9 +32,6 @@ local function decode_level(level_id)
 	end
 	local data = decode_json(level_file)
 	assert(data)
-	for k, v in pairs(data) do
-		print(tostring(k) .. ": " .. tostring(v))
-	end
 	local level = {
 		id = level_id,
 		x = data.x,
@@ -58,34 +57,94 @@ local function decode_level(level_id)
 	return level
 end
 
-function WorldLoaderSystem:init()
-	self.subscriptions = {}
-	for _, name in pairs(WorldLoaderSystem.EVENTS) do
-		self.subscriptions[name] = {}
+local function decode_world(self, file_path)
+	local world_file, error = file.open(file_path, file.kFileRead)
+	if error then
+		print("error reading " .. tostring(file_path))
+		print(error)
+	end
+	self.world = {
+		levels = {},
+	}
+	-- structure
+	-- world
+	-- |- level
+	--    |- layers
+	--       |- gridTiles
+	--       |- entityInstances
+	local world_data = decode_json(world_file)
+	for _, level_data in pairs(world_data.levels) do
+		local level = {
+			id = level_data.iid,
+			name = level_data.identifier,
+			x = level_data.worldX,
+			y = level_data.worldY,
+			width = level_data.pxWid,
+			height = level_data.pxHei,
+			xx = level_data.worldX + level_data.pxWid,
+			yy = level_data.worldY + level_data.pxHei,
+			tiles = {},
+			entities = {},
+		}
+		self.world.levels[level.name] = level
+		for i, layer in ipairs(level_data.layerInstances) do
+			local collider = false
+			local z_index = -i
+			if layer.__identifier:sub(-6) == "_Upper" then
+				z_index = level.yy - i
+			end
+			if layer.__identifier:sub(-9) == "_Collider" then
+				collider = true
+			end
+			if layer.autoLayerTiles then
+				for _, tile in pairs(layer.autoLayerTiles) do
+					table.insert(level.tiles, {
+						x = tile.px[1],
+						y = tile.px[2],
+						z_index_ofset = z_index,
+						image_number = tile.t + 1,
+						img_x = tile.src[1],
+						img_y = tile.src[2],
+						collider = collider,
+					})
+				end
+			end
+			if layer.gridTiles then
+				for _, tile in pairs(layer.gridTiles) do
+					table.insert(level.tiles, {
+						x = tile.px[1],
+						y = tile.px[2],
+						z_index_offset = z_index,
+						image_number = tile.t + 1,
+						img_x = tile.src[1],
+						img_y = tile.src[2],
+						collider = collider,
+					})
+				end
+			end
+		end
 	end
 end
 
-function WorldLoaderSystem:subscribe(event, fn)
-	table.insert(self.subscriptions[event], fn)
+function WorldLoaderSystem:init()
+	decode_world(self, PATH .. "world.ldtk")
+	self:register_events(WorldLoaderSystem.EVENTS)
 end
 
 function WorldLoaderSystem:load(level_id)
-	local level = decode_level(level_id)
-	self:publish(WorldLoaderSystem.EVENTS.LOAD_LEVEL, {
-		x = level.x,
-		y = level.y,
-		width = level.width,
-		height = level.height,
-		xx = level.x + level.width,
-		yy = level.y + level.height,
-	})
-	for _, layer in ipairs(level.layers) do
-		self:publish(WorldLoaderSystem.EVENTS.LOAD_LAYER, {
-			image_path = layer,
-			level_id = level.id,
-		})
+	local level = self.world.levels[level_id]
+	self:publish(WorldLoaderSystem.EVENTS.LOAD_LEVEL, level)
+	for _, tile in ipairs(level.tiles) do
+		self:publish(WorldLoaderSystem.EVENTS.LOAD_TILE, tile)
 	end
+	local level = decode_level("Level_0")
 	for _, entity in ipairs(level.entities) do
 		self:publish(WorldLoaderSystem.EVENTS.LOAD_ENTITY, entity)
 	end
+	--for _, raw_entity in ipairs(level.entities) do
+	--local entities = extract_entities(self, level, raw_entity)
+	--for _, entity in ipairs(entities) do
+	--self:publish(WorldLoaderSystem.EVENTS.LOAD_ENTITY, entity)
+	--end
+	--end
 end

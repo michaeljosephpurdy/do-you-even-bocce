@@ -1,7 +1,15 @@
-class("BaseEntity").extends(playdate.graphics.sprite)
+local sprite <const> = playdate.graphics.sprite
+local image <const> = playdate.graphics.image
+class("BaseEntity").extends(sprite)
 
-function BaseEntity:init()
+function BaseEntity:init(x, y, image_path)
 	BaseEntity.super.init(self)
+	if image_path then
+		self:setImage(image.new(image_path))
+	end
+	if x and y then
+		self:moveTo(x, y)
+	end
 end
 
 function BaseEntity:fix_draw_order()
@@ -10,9 +18,6 @@ function BaseEntity:fix_draw_order()
 		return
 	end
 	self:setZIndex(z_index)
-	if self.input_meter then
-		self.input_meter:setZIndex(z_index - 1)
-	end
 end
 
 function BaseEntity:collides_with(other)

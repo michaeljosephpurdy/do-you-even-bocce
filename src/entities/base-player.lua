@@ -27,4 +27,5 @@ function BasePlayer:init(type)
 		self[k] = v
 	end
 	self:setImage(self.sprite_sheet)
+	self:setTag(COLLIDER_TAGS.TRIGGER)
 end

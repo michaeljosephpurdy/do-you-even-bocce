@@ -13,7 +13,13 @@ function OverworldScene:init()
 			local other_player = OverworldBocceBallPlayer(payload.BoccePlayers, payload.x, payload.y)
 			other_player.target = self.player
 			other_player.singleton = true
-			SpriteManagerSingleton:add(other_player, payload.x, payload.y)
+			SpriteManagerSingleton:add(other_player)
+		elseif payload.id == "Door" then
+			local door = Door(payload.x, payload.y)
+			SpriteManagerSingleton:add(door)
+		elseif payload.id == "Sign" then
+			local sign = Sign(payload.x, payload.y)
+			SpriteManagerSingleton:add(sign)
 		end
 	end)
 end

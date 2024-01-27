@@ -91,12 +91,12 @@ function SpriteManager:update()
 		break
 	end
 	sprite_class.update()
-	local colliding_sprites = sprite_class.allOverlappingSprites()
-	for i = 1, #colliding_sprites do
-		local collision_pair = colliding_sprites[i]
-		local a = collision_pair[1]
-		local b = collision_pair[2]
-		a:collides_with(b)
-		--b:collides_with(a)
-	end
+	--local colliding_sprites = sprite_class.allOverlappingSprites()
+	--for i = 1, #colliding_sprites do
+	--local collision_pair = colliding_sprites[i]
+	--local a = collision_pair[1]
+	--local b = collision_pair[2]
+	--a:collides_with(b)
+	--b:collides_with(a)
+	--end
 end

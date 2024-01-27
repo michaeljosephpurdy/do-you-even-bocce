@@ -3,34 +3,45 @@ OverworldControllablePlayer.is_player = true
 
 function OverworldControllablePlayer:init(x, y)
 	OverworldControllablePlayer.super.init(self, BasePlayer.TYPES.MAIN)
+	self:setTag(COLLIDER_TAGS.PLAYER)
 	self:moveTo(x, y)
 	self:setZIndex(2)
 	self:setCollideRect(6, self.height - self.height / 4, self.width - 12, self.height / 4)
 end
 
+function OverworldControllablePlayer:collisionResponse(other)
+	local other_tag = other:getTag()
+	if other_tag == COLLIDER_TAGS.OBSTACLE then
+		return playdate.graphics.sprite.kCollisionTypeSlide
+	end
+	return playdate.graphics.sprite.kCollisionTypeOverlap
+end
+
 function OverworldControllablePlayer:update()
 	OverworldControllablePlayer.super.update(self)
+	local goal_x, goal_y = self.x, self.y
 	if playdate.buttonIsPressed(playdate.kButtonLeft) then
-		local new_x = self.x - 2
-		self:moveTo(new_x, self.y)
+		goal_x = goal_x - 2
 	elseif playdate.buttonIsPressed(playdate.kButtonRight) then
-		local new_x = self.x + 2
-		self:moveTo(new_x, self.y)
+		goal_x = goal_x + 2
 	end
 	if playdate.buttonIsPressed(playdate.kButtonUp) then
-		local new_y = self.y - 2
-		self:moveTo(self.x, new_y)
+		goal_y = goal_y - 2
 	elseif playdate.buttonIsPressed(playdate.kButtonDown) then
-		local new_y = self.y + 2
-		self:moveTo(self.x, new_y)
+		goal_y = goal_y + 2
+	end
+	local actual_x, actual_y, collisions, number_of_collisions = self:moveWithCollisions(goal_x, goal_y)
+	for i = 1, number_of_collisions do
+		local collision = collisions[i]
+		local collided_sprite = collision.other
+		local collision_tag = collided_sprite:getTag()
+		if collision_tag == COLLIDER_TAGS.TRIGGER then
+			self.target = collided_sprite
+		end
 	end
 	CameraSingleton:target_sprite_centered(self, 5)
-	for _, other in ipairs(self:overlappingSprites()) do
-		self.target = other
-	end
 	if self.target and playdate.buttonJustReleased(playdate.kButtonA) then
-		print("here")
-		SceneManagerSingleton:next_state(BocceGameScene)
+		self.target:trigger()
 	end
 	self.target = nil
 end
