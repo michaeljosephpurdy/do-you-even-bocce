@@ -35,7 +35,7 @@ function SceneManager:next_state(state)
 	local payload = {}
 	if self.previous_state then
 		payload = self.previous_state:build_payload()
-		payload.source = self.previous_state.className
+		payload.source = self.previous_state
 		self.previous_state:destroy()
 	end
 	self.state = state

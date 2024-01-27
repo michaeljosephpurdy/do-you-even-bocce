@@ -44,10 +44,18 @@ function SpriteManager:add(sprite)
 end
 
 function SpriteManager:remove_all()
-	print("removing")
 	for i, active_sprite in ipairs(self.active_sprites) do
 		print(active_sprite.className)
 		if active_sprite:isa(sprite_class) then
+			active_sprite:remove()
+		end
+		table.remove(self.active_sprites, i)
+	end
+end
+
+function SpriteManager:remove_all_of_type(type)
+	for i, active_sprite in ipairs(self.active_sprites) do
+		if active_sprite:isa(type) then
 			active_sprite:remove()
 		end
 		table.remove(self.active_sprites, i)
@@ -99,4 +107,9 @@ function SpriteManager:update()
 	--a:collides_with(b)
 	--b:collides_with(a)
 	--end
+end
+
+function SpriteManager:count()
+	print("active: " .. #self.active_sprites)
+	print("inactive: " .. #self.inactive_sprites)
 end
