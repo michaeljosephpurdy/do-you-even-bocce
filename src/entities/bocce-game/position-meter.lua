@@ -1,8 +1,8 @@
 local gfx <const> = playdate.graphics
 class("PositionMeter").extends(BaseMeter)
 
-function PositionMeter:init(player_x, player_y, player)
-	PositionMeter.super.init(self, player_x, player_y, 150, 150, 0)
+function PositionMeter:init(player_x, player_y, player, level_id)
+	PositionMeter.super.init(self, player_x, player_y, 150, 150, 0, level_id)
 	self.radius = 50
 	self.start_x, self.start_y = player_x, player_y
 	self.arcs = {

@@ -1,8 +1,9 @@
 local gfx <const> = playdate.graphics
 class("PhaseOverlay").extends(gfx.sprite)
 
-function PhaseOverlay:init()
+function PhaseOverlay:init(level_id)
 	PhaseOverlay.super.init(self)
+	self.level_id = level_id
 	self:setImage(gfx.image.new("images/overlay-power-phase"))
 	self:setCenter(0, 0)
 	self:moveTo(0, -self.height)
@@ -24,25 +25,25 @@ function PhaseOverlay:remove()
 end
 
 class("PositionPhaseOverlay").extends(PhaseOverlay)
-function PositionPhaseOverlay:init()
-	PositionPhaseOverlay.super.init(self)
+function PositionPhaseOverlay:init(level_id)
+	PositionPhaseOverlay.super.init(self, level_id)
 	self:setImage(gfx.image.new("images/overlay-position-phase"))
 end
 
 class("DirectionPhaseOverlay").extends(PhaseOverlay)
-function DirectionPhaseOverlay:init()
-	DirectionPhaseOverlay.super.init(self)
+function DirectionPhaseOverlay:init(level_id)
+	DirectionPhaseOverlay.super.init(self, level_id)
 	self:setImage(gfx.image.new("images/overlay-direction-phase"))
 end
 
 class("PowerPhaseOverlay").extends(PhaseOverlay)
-function PowerPhaseOverlay:init()
-	PowerPhaseOverlay.super.init(self)
+function PowerPhaseOverlay:init(level_id)
+	PowerPhaseOverlay.super.init(self, level_id)
 	self:setImage(gfx.image.new("images/overlay-power-phase"))
 end
 
 class("SpinPhaseOverlay").extends(PhaseOverlay)
-function SpinPhaseOverlay:init()
-	SpinPhaseOverlay.super.init(self)
+function SpinPhaseOverlay:init(level_id)
+	SpinPhaseOverlay.super.init(self, level_id)
 	self:setImage(gfx.image.new("images/overlay-spin-phase"))
 end

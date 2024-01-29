@@ -17,8 +17,8 @@ local TYPE_DATA = {
 	},
 }
 
-function BasePlayer:init(type)
-	BasePlayer.super.init(self)
+function BasePlayer:init(type, level_id)
+	BasePlayer.super.init(self, nil, nil, nil, level_id)
 	assert(BasePlayer.TYPES[type], tostring(type) .. " not a valid BasePlayer.TYPES")
 	local data = TYPE_DATA[type]
 	assert(data, tostring(type) .. " not found in BasePlayer")

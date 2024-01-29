@@ -25,6 +25,11 @@ function EnterIcon:init(x, y)
 	EnterIcon.super.init(self, x, y, "images/enter-icon")
 end
 
+class("ExitIcon").extends(BaseIcon)
+function ExitIcon:init(x, y)
+	ExitIcon.super.init(self, x, y, "images/exit-icon")
+end
+
 class("ReadIcon").extends(BaseIcon)
 function ReadIcon:init(x, y)
 	ReadIcon.super.init(self, x, y, "images/read-icon")

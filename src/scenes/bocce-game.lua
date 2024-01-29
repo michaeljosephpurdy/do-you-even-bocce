@@ -12,19 +12,21 @@ BocceGameScene.STATES = STATES
 
 function BocceGameScene:init()
 	BocceGameScene.super.init(self)
+	self.level_id = "bocce_game"
 end
 
 function BocceGameScene:setup(payload)
 	self.state = STATES.PLAYING
-	self.turn_manager = BocceGameTurnManager(8)
+	self.turn_manager = BocceGameTurnManager(8, self.level_id)
 	self.thrown_balls = {}
-	self.ai_player = BocceAiPlayer(payload.ai_player.type, payload.ai_player.x, payload.ai_player.y, BlackBall)
+	self.ai_player =
+		BocceAiPlayer(payload.ai_player.type, payload.ai_player.x, payload.ai_player.y, BlackBall, self.level_id)
 	self.ai_player.on_throw = function(ball)
 		table.insert(self.thrown_balls, ball)
 	end
 	self.turn_manager:add(self.ai_player)
 
-	self.controllable_player = BocceControllablePlayer(WhiteBall, payload.player.x, payload.player.y)
+	self.controllable_player = BocceControllablePlayer(WhiteBall, payload.player.x, payload.player.y, self.level_id)
 	self.controllable_player.on_throw = function(ball)
 		table.insert(self.thrown_balls, ball)
 	end
@@ -66,9 +68,7 @@ function BocceGameScene:update()
 end
 
 function BocceGameScene:destroy()
-	SpriteManagerSingleton:remove(self.controllable_player)
-	SpriteManagerSingleton:remove(self.ai_player)
-	SpriteManagerSingleton:remove_all_of_type(Ball)
+	SpriteManagerSingleton:purge_level(self.level_id)
 end
 
 function BocceGameScene:build_payload()

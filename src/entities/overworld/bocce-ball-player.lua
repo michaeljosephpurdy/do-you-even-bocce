@@ -1,8 +1,10 @@
 class("OverworldBocceBallPlayer").extends(BasePlayer)
 OverworldBocceBallPlayer:implements(TriggerByPlayerMixin)
 
-function OverworldBocceBallPlayer:init(type, x, y)
-	OverworldBocceBallPlayer.super.init(self, type)
+function OverworldBocceBallPlayer:init(props)
+	local type = props.BoccePlayers
+	OverworldBocceBallPlayer.super.init(self, type, props.level_id)
+	local x, y = props.x, props.y
 	self:moveTo(x, y)
 	self:setCollideRect(-8, self.height - self.height / 2, self.width + 16, self.height / 2)
 	self.icon = SpeakIcon(x - self.width, y - self.height)
