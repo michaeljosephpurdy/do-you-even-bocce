@@ -1,7 +1,7 @@
 class("ColliderTile").extends(BaseTile)
 
-function ColliderTile:init(x, y, z_index_offset, image_number)
-	ColliderTile.super.init(self, x, y, z_index_offset, image_number)
+function ColliderTile:init(payload)
+	ColliderTile.super.init(self, payload)
 	self:setCollideRect(0, 0, self.width, self.height)
 	self:setTag(COLLIDER_TAGS.OBSTACLE)
 end

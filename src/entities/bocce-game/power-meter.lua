@@ -3,8 +3,8 @@ class("PowerMeter").extends(BaseMeter)
 
 PowerMeter.singleton = true
 
-function PowerMeter:init(player_x, player_y, starting_direction)
-	PowerMeter.super.init(self, player_x, player_y, 100, 100, starting_direction)
+function PowerMeter:init(player_x, player_y, starting_direction, level_id)
+	PowerMeter.super.init(self, player_x, player_y, 100, 100, starting_direction, level_id)
 	self.starting_direction = starting_direction
 	self.arc.startAngle = starting_direction
 	self.arc.endAngle = starting_direction + 1

@@ -1,8 +1,9 @@
 class("OverworldControllablePlayer").extends(BasePlayer)
 OverworldControllablePlayer.is_player = true
 
-function OverworldControllablePlayer:init(x, y)
-	OverworldControllablePlayer.super.init(self, BasePlayer.TYPES.MAIN)
+function OverworldControllablePlayer:init(props)
+	OverworldControllablePlayer.super.init(self, BasePlayer.TYPES.MAIN, props.level_id)
+	local x, y = props.x, props.y
 	self:setTag(COLLIDER_TAGS.PLAYER)
 	self:moveTo(x, y)
 	self:setZIndex(2)
@@ -41,7 +42,7 @@ function OverworldControllablePlayer:update()
 	end
 	CameraSingleton:target_sprite_centered(self, 5)
 	if self.target and playdate.buttonJustReleased(playdate.kButtonA) then
-		self.target:trigger()
+		self.target:trigger(self)
 	end
 	self.target = nil
 end

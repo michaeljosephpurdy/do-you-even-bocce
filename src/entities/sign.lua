@@ -2,8 +2,9 @@ class("Sign").extends(BaseEntity)
 Sign:implements(TriggerByPlayerMixin)
 Sign:implements(BouncingIconMixin)
 
-function Sign:init(x, y)
-	Sign.super.init(self, x, y, "images/sign")
+function Sign:init(props)
+	local x, y = props.x, props.y
+	Sign.super.init(self, props.x, props.y, "images/sign", props.level_id)
 	self:setup_icon(ReadIcon, x - self.width / 2, y - self.height / 2)
 	self:setTag(COLLIDER_TAGS.TRIGGER)
 	self:setCollideRect(0, self.height / 2, self.width, self.height)

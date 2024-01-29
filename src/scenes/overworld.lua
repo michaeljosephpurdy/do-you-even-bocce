@@ -6,19 +6,19 @@ class("OverworldScene").extends(BaseScene)
 function OverworldScene:init()
 	self.level_id = "Level_0"
 	WorldLoaderSingleton:subscribe(WorldLoaderSystem.EVENTS.LOAD_ENTITY, function(payload)
-		if not self.player and payload.id == "MainCharacter" then
-			self.player = OverworldControllablePlayer(payload.x, payload.y)
+		if not self.player and payload.type == "MainCharacter" then
+			self.player = OverworldControllablePlayer(payload)
 			SpriteManagerSingleton:add(self.player)
-		elseif payload.id == "BocceBallPlayer" then
-			local other_player = OverworldBocceBallPlayer(payload.BoccePlayers, payload.x, payload.y)
+		elseif payload.type == "BocceBallPlayer" then
+			local other_player = OverworldBocceBallPlayer(payload)
 			other_player.target = self.player
 			other_player.singleton = true
 			SpriteManagerSingleton:add(other_player)
-		elseif payload.id == "Door" then
-			local door = Door(payload.x, payload.y)
+		elseif payload.type == "Door" then
+			local door = Door(payload)
 			SpriteManagerSingleton:add(door)
-		elseif payload.id == "Sign" then
-			local sign = Sign(payload.x, payload.y)
+		elseif payload.type == "Sign" then
+			local sign = Sign(payload)
 			SpriteManagerSingleton:add(sign)
 		end
 	end)
@@ -28,10 +28,14 @@ function OverworldScene:setup(payload)
 	if self.player then
 		SpriteManagerSingleton:enable(self.player)
 	end
+	if self.level_id == payload.level_id then
+		return
+	end
 	if payload and payload.level_id then
 		self.level_id = payload.level_id
 	end
-	WorldLoaderSingleton:load(self.level_id)
+	self.level_id = WorldLoaderSingleton:load(self.level_id)
+	print(self.level_id)
 end
 
 function OverworldScene:update()

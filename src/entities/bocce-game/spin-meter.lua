@@ -1,8 +1,8 @@
 local gfx <const> = playdate.graphics
 class("SpinMeter").extends(BaseMeter)
 
-function SpinMeter:init(player_x, player_y, starting_direction)
-	SpinMeter.super.init(self, player_x, player_y, 100, 100, starting_direction)
+function SpinMeter:init(player_x, player_y, starting_direction, level_id)
+	SpinMeter.super.init(self, player_x, player_y, 100, 100, starting_direction, level_id)
 	self.overlay_arc = self.arc:copy()
 	self.overlay_arc.startAngle = self.overlay_arc.startAngle - 1
 	self.overlay_arc.endAngle = self.overlay_arc.endAngle + 1

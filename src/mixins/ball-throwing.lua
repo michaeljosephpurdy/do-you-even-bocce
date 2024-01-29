@@ -4,6 +4,7 @@ function BallThrowingMixin:throw_ball(x, y, dir_x, dir_y, power, spin, jump_heig
 	assert(self.ball_type)
 	local thrown_ball = self.ball_type(x, y, dir_x, dir_y, power, spin, jump_height)
 	thrown_ball.player = self
+	thrown_ball.level_id = self.level_id
 	SpriteManagerSingleton:add(thrown_ball)
 	if self.on_throw then
 		self.on_throw(thrown_ball)

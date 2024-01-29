@@ -2,8 +2,9 @@ local sprite <const> = playdate.graphics.sprite
 local image <const> = playdate.graphics.image
 class("BaseEntity").extends(sprite)
 
-function BaseEntity:init(x, y, image_path)
+function BaseEntity:init(x, y, image_path, level_id)
 	BaseEntity.super.init(self)
+	self.level_id = level_id
 	if image_path then
 		self:setImage(image.new(image_path))
 	end

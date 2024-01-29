@@ -1,13 +1,15 @@
 class("BocceGameTurnManager").extends()
 
-function BocceGameTurnManager:init(balls_per_player)
+function BocceGameTurnManager:init(balls_per_player, level_id)
 	self.active_player = nil
 	self.inactive_player = nil
 	self.players = {}
 	self.balls = balls_per_player
+	self.level_id = level_id
 end
 
 function BocceGameTurnManager:add(entity)
+	entity.level_id = self.level_id
 	if entity:isa(BasePlayer) then
 		table.insert(self.players, entity)
 		self.inactive_player = self.players[1]
