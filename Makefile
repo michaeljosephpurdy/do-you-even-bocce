@@ -20,6 +20,7 @@ images:
 	aseprite -b assets/images/exit-icon.aseprite --save-as src/images/exit-icon.png
 	aseprite -b assets/images/enter-icon.aseprite --save-as src/images/enter-icon.png
 	aseprite -b assets/images/read-icon.aseprite --save-as src/images/read-icon.png
+	aseprite -b assets/images/dialogue-nine-slice.aseprite --save-as src/images/dialogue-nine-slice.png
 	aseprite -b --layer "Position Phase" assets/images/phase-overlays.aseprite --save-as src/images/overlay-position-phase.png
 	aseprite -b --layer "Direction Phase" assets/images/phase-overlays.aseprite --save-as src/images/overlay-direction-phase.png
 	aseprite -b --layer "Power Phase" assets/images/phase-overlays.aseprite --save-as src/images/overlay-power-phase.png
