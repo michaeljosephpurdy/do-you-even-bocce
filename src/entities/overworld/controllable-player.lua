@@ -18,18 +18,19 @@ function OverworldControllablePlayer:collisionResponse(other)
 	return playdate.graphics.sprite.kCollisionTypeOverlap
 end
 
-function OverworldControllablePlayer:update()
-	OverworldControllablePlayer.super.update(self)
+local function handle_movement(self)
 	local goal_x, goal_y = self.x, self.y
-	if playdate.buttonIsPressed(playdate.kButtonLeft) then
-		goal_x = goal_x - 2
-	elseif playdate.buttonIsPressed(playdate.kButtonRight) then
-		goal_x = goal_x + 2
-	end
-	if playdate.buttonIsPressed(playdate.kButtonUp) then
-		goal_y = goal_y - 2
-	elseif playdate.buttonIsPressed(playdate.kButtonDown) then
-		goal_y = goal_y + 2
+	if not self.lock_controls then
+		if playdate.buttonIsPressed(playdate.kButtonLeft) then
+			goal_x = goal_x - 2
+		elseif playdate.buttonIsPressed(playdate.kButtonRight) then
+			goal_x = goal_x + 2
+		end
+		if playdate.buttonIsPressed(playdate.kButtonUp) then
+			goal_y = goal_y - 2
+		elseif playdate.buttonIsPressed(playdate.kButtonDown) then
+			goal_y = goal_y + 2
+		end
 	end
 	local actual_x, actual_y, collisions, number_of_collisions = self:moveWithCollisions(goal_x, goal_y)
 	for i = 1, number_of_collisions do
@@ -38,8 +39,14 @@ function OverworldControllablePlayer:update()
 		local collision_tag = collided_sprite:getTag()
 		if collision_tag == COLLIDER_TAGS.TRIGGER then
 			self.target = collided_sprite
+			print("player target is :" .. collided_sprite.className)
 		end
 	end
+end
+
+function OverworldControllablePlayer:update()
+	OverworldControllablePlayer.super.update(self)
+	handle_movement(self)
 	CameraSingleton:target_sprite_centered(self, 5)
 	if self.target and playdate.buttonJustReleased(playdate.kButtonA) then
 		self.target:trigger(self)

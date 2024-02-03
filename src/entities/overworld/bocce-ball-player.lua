@@ -10,6 +10,7 @@ function OverworldBocceBallPlayer:init(props)
 	self.icon = SpeakIcon(x - self.width, y - self.height)
 	self.icon:setZIndex(Z_INDEXES.ICONS)
 	self.icon:add()
+	self.props = props
 end
 
 function OverworldBocceBallPlayer:remove()
@@ -25,6 +26,13 @@ function OverworldBocceBallPlayer:update()
 	end
 end
 
-function OverworldBocceBallPlayer:trigger()
-	SceneManagerSingleton:next_state(BocceGameScene)
+function OverworldBocceBallPlayer:trigger(other)
+	other.lock_controls = true
+	DialogueSystemSingleton:queue(self.props.intro_talk, function()
+		print("on_accept")
+		SceneManagerSingleton:next_state(BocceGameScene)
+	end, function()
+		print("on_reject")
+		other.lock_controls = false
+	end)
 end

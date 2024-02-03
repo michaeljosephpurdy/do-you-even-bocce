@@ -4,11 +4,9 @@ class("ScreenTransitionSystem").extends(sprite)
 
 function ScreenTransitionSystem:init()
 	ScreenTransitionSystem.super.init(self)
-	-- TODO:
 	self:setSize(400, 240)
 	self:setCenter(0, 0)
 	self:moveTo(0, 0)
-	self:setAlwaysRedraw(true)
 	self:setIgnoresDrawOffset(true)
 	self:setZIndex(Z_INDEXES.TRANSITION)
 	self:setVisible(false)
@@ -20,6 +18,7 @@ function ScreenTransitionSystem:update()
 		return
 	end
 	self.draw_height = self.timer.value
+	self:markDirty()
 end
 
 function ScreenTransitionSystem:start(fn)

@@ -2,6 +2,7 @@ import("CoreLibs/animator")
 import("CoreLibs/easing")
 import("CoreLibs/graphics")
 import("CoreLibs/math")
+import("CoreLibs/nineslice")
 import("CoreLibs/object")
 -- add mixin support to CoreLibs/object
 function Object:implements(...)
@@ -37,6 +38,7 @@ import("systems/sprite-manager")
 import("systems/scene-manager")
 import("systems/tilemap-manager")
 import("systems/screen-transition")
+import("systems/dialogue")
 import("scenes/bocce-game")
 import("scenes/overworld")
 import("entities/collider-tile")
@@ -57,6 +59,7 @@ import("entities/sign")
 
 Z_INDEXES = {
 	TRANSITION = 32766,
+	DIALOGUE = 32763,
 	UI = 32760,
 	ICONS = 32750,
 	METERS = 32740,
@@ -74,6 +77,7 @@ function init()
 	TileMapManagerSingleton = TileMapManager()
 	CameraSingleton = CameraSystem()
 	ScreenTransitionSingleton = ScreenTransitionSystem()
+	DialogueSystemSingleton = DialogueSystem()
 	SceneManagerSingleton:add_state(BocceGameScene())
 	SceneManagerSingleton:add_state(OverworldScene())
 	--SceneManagerSingleton:next_state(BocceGameScene)

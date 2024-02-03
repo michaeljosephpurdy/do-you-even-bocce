@@ -38,11 +38,13 @@ end
 function Door:trigger(other)
 	print("going to " .. self.linked_level_uid)
 	print("leaving  " .. self.level_id)
+	other.lock_controls = true
 	ScreenTransitionSingleton:start(function()
 		other.level_id = self.linked_level_uid
 		other:moveTo(self.linked_x, self.linked_y)
 		WorldLoaderSingleton:load(self.linked_level_uid)
 		CameraSingleton:target_sprite_centered(other, 0)
 		SpriteManagerSingleton:purge_level(self.level_id)
+		other.lock_controls = false
 	end)
 end
