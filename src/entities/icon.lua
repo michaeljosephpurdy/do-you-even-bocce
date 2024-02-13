@@ -4,6 +4,7 @@ class("BaseIcon").extends(graphics.sprite)
 function BaseIcon:init(x, y, image_path)
 	BaseIcon.super.init(self)
 	self:setImage(graphics.image.new(image_path))
+	self:setZIndex(Z_INDEXES.ICONS)
 	self.start_x, self.start_y = x, y
 	self:moveTo(x, y)
 	self.animation = graphics.animator.new(750, -5, 8, playdate.easingFunctions.inQuad)

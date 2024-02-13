@@ -6,7 +6,7 @@ function Door:init(props)
 	local x, y = props.x, props.y
 	Door.super.init(self, x, y, "images/door", props.level_id)
 	self:setTag(COLLIDER_TAGS.TRIGGER)
-	self:setCollideRect(0, self.height / 2, self.width, self.height)
+	self:setCollideRect(props.trigger_offset_x, props.trigger_offset_y, self.width, self.height)
 	self:fix_draw_order()
 	if props.exit then
 		self:setup_icon(ExitIcon, x - self.width / 2, y - self.height / 2)
@@ -19,6 +19,7 @@ function Door:init(props)
 	local linked_door = WorldLoaderSingleton:get_entity(props.travel_to.entityIid)
 	self.linked_x = linked_door.x
 	self.linked_y = linked_door.y
+	self:setVisible(props.visible)
 end
 
 function Door:update()
@@ -37,9 +38,13 @@ end
 function Door:trigger(other)
 	print("going to " .. self.linked_level_uid)
 	print("leaving  " .. self.level_id)
-	other.level_id = self.linked_level_uid
-	other:moveTo(self.linked_x, self.linked_y)
-	WorldLoaderSingleton:load(self.linked_level_uid)
-	CameraSingleton:target_sprite_centered(other, 10)
-	SpriteManagerSingleton:purge_level(self.level_id)
+	other.lock_controls = true
+	ScreenTransitionSingleton:start(function()
+		other.level_id = self.linked_level_uid
+		other:moveTo(self.linked_x, self.linked_y)
+		WorldLoaderSingleton:load(self.linked_level_uid)
+		CameraSingleton:target_sprite_centered(other, 0)
+		SpriteManagerSingleton:purge_level(self.level_id)
+		other.lock_controls = false
+	end)
 end

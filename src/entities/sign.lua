@@ -8,6 +8,7 @@ function Sign:init(props)
 	self:setup_icon(ReadIcon, x - self.width / 2, y - self.height / 2)
 	self:setTag(COLLIDER_TAGS.TRIGGER)
 	self:setCollideRect(0, self.height / 2, self.width, self.height)
+	self.props = props
 end
 
 function Sign:update()
@@ -23,6 +24,14 @@ function Sign:remove()
 	Sign.super.remove(self)
 end
 
-function Sign:trigger()
-	print("sign trigger")
+function Sign:trigger(other)
+	if self.triggered then
+		return
+	end
+	DialogueSystemSingleton:queue({ text = self.props.text }, function()
+		other.lock_controls = false
+		self.triggered = false
+	end)
+	other.lock_controls = true
+	self.triggered = true
 end

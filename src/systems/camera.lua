@@ -41,6 +41,9 @@ end
 
 function CameraSystem:target(x, y, lerp_factor)
 	self.lerp_factor = lerp_factor or 3
+	if self.lerp_factor == 0 then
+		self.x, self.y = x, y
+	end
 	self.target_x, self.target_y = x, y
 end
 
