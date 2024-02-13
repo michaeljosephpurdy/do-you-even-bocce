@@ -35,7 +35,14 @@ function OverworldScene:setup(payload)
 		self.level_id = payload.level_id
 	end
 	self.level_id = WorldLoaderSingleton:load(self.level_id)
-	print(self.level_id)
+	if payload.source and payload.source:isa(BocceGameScene) then
+		self.player.lock_controls = true
+		if payload.player_won then
+			self.player.interacting_with:player_won(self.player)
+		else
+			self.player.interacting_with:player_lost(self.player)
+		end
+	end
 end
 
 function OverworldScene:update()
@@ -52,9 +59,9 @@ function OverworldScene:build_payload()
 			y = self.player.y,
 		},
 		ai_player = {
-			x = self.player.target.x,
-			y = self.player.target.y,
-			type = self.player.target.type,
+			x = self.player.interacting_with.x,
+			y = self.player.interacting_with.y,
+			type = self.player.interacting_with.type,
 		},
 	}
 end

@@ -25,16 +25,13 @@ function Sign:remove()
 end
 
 function Sign:trigger(other)
-	other.lock_controls = true
 	if self.triggered then
 		return
 	end
-	DialogueSystemSingleton:queue(self.props.text, function()
-		other.lock_controls = false
-		self.triggered = false
-	end, function()
+	DialogueSystemSingleton:queue({ text = self.props.text }, function()
 		other.lock_controls = false
 		self.triggered = false
 	end)
+	other.lock_controls = true
 	self.triggered = true
 end

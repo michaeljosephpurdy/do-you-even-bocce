@@ -58,10 +58,13 @@ function BocceGameScene:update()
 		end
 	elseif self.state == STATES.SCORING then
 		self.score_manager:update()
-		if self.score_manager:is_done() and playdate.buttonJustReleased(playdate.kButtonB) then
+		if self.score_manager:is_done() then
+			self.state = STATES.EXITING
 			self.jack_ball:remove()
-			SceneManagerSingleton:next_state(OverworldScene)
 		end
+	elseif self.state == STATES.EXITING then
+		CameraSingleton:target_between_sprites_centered(self.ai_player, self.controllable_player)
+		SceneManagerSingleton:next_state(OverworldScene)
 	end
 	CameraSingleton:update()
 	playdate.timer.updateTimers()
@@ -72,7 +75,6 @@ function BocceGameScene:destroy()
 end
 
 function BocceGameScene:build_payload()
-	-- TODO: return everything to set the OverworldScene back up
 	return {
 		player = {
 			x = self.controllable_player.x,
@@ -82,5 +84,6 @@ function BocceGameScene:build_payload()
 			x = self.ai_player.x,
 			y = self.ai_player.y,
 		},
+		player_won = self.score_manager:player_won(),
 	}
 end

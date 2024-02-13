@@ -36,7 +36,6 @@ function ScreenTransitionSystem:start(fn)
 end
 
 function ScreenTransitionSystem:draw(x, y, width, height)
-	print("draw")
 	gfx.lockFocus(self.image)
 	gfx.setColor(gfx.kColorBlack)
 	gfx.fillRect(0, self.height, width, -self.draw_height)

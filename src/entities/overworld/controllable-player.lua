@@ -25,8 +25,7 @@ local function handle_movement(self)
 			goal_x = goal_x - 2
 		elseif playdate.buttonIsPressed(playdate.kButtonRight) then
 			goal_x = goal_x + 2
-		end
-		if playdate.buttonIsPressed(playdate.kButtonUp) then
+		elseif playdate.buttonIsPressed(playdate.kButtonUp) then
 			goal_y = goal_y - 2
 		elseif playdate.buttonIsPressed(playdate.kButtonDown) then
 			goal_y = goal_y + 2
@@ -39,11 +38,14 @@ local function handle_movement(self)
 		local collision_tag = collided_sprite:getTag()
 		if collision_tag == COLLIDER_TAGS.TRIGGER then
 			self.target = collided_sprite
-			print("player target is :" .. collided_sprite.className)
 		end
 	end
 end
 
+function OverworldControllablePlayer:add()
+	OverworldControllablePlayer.lock_controls = false
+	OverworldControllablePlayer.super.add(self)
+end
 function OverworldControllablePlayer:update()
 	OverworldControllablePlayer.super.update(self)
 	handle_movement(self)

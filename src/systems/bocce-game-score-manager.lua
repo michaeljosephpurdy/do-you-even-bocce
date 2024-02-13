@@ -46,6 +46,14 @@ function BocceGameScoreManager:init(jack_ball, balls)
 		end)
 	end
 	self.winning_player:add_points(self.points)
+	print("winning player is " .. self.winning_player.className)
+end
+
+function BocceGameScoreManager:player_won()
+	local player_won = self.winning_player.className == "BocceControllablePlayer"
+	print("player_won")
+	print(player_won)
+	return player_won
 end
 
 function BocceGameScoreManager:update()

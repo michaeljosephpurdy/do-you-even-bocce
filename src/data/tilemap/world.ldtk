@@ -2102,14 +2102,13 @@
 						{ "px": [1184,160], "src": [160,32], "f": 0, "t": 37, "d": [247], "a": 1 },
 						{ "px": [896,320], "src": [32,0], "f": 0, "t": 1, "d": [448], "a": 1 },
 						{ "px": [928,320], "src": [32,0], "f": 0, "t": 1, "d": [449], "a": 1 },
+						{ "px": [1088,320], "src": [32,0], "f": 0, "t": 1, "d": [454], "a": 1 },
+						{ "px": [1120,320], "src": [32,0], "f": 0, "t": 1, "d": [455], "a": 1 },
+						{ "px": [1152,320], "src": [32,0], "f": 0, "t": 1, "d": [456], "a": 1 },
 						{ "px": [864,352], "src": [128,32], "f": 0, "t": 36, "d": [489], "a": 1 },
-						{ "px": [896,352], "src": [96,32], "f": 0, "t": 35, "d": [490], "a": 1 },
 						{ "px": [960,352], "src": [160,32], "f": 0, "t": 37, "d": [492], "a": 1 },
-						{ "px": [1056,352], "src": [128,0], "f": 0, "t": 4, "d": [495], "a": 1 },
-						{ "px": [1088,352], "src": [160,0], "f": 0, "t": 5, "d": [496], "a": 1 },
-						{ "px": [1120,352], "src": [160,0], "f": 0, "t": 5, "d": [497], "a": 1 },
-						{ "px": [1152,352], "src": [160,0], "f": 0, "t": 5, "d": [498], "a": 1 },
-						{ "px": [1184,352], "src": [192,0], "f": 0, "t": 6, "d": [499], "a": 1 }
+						{ "px": [1056,352], "src": [128,32], "f": 0, "t": 36, "d": [495], "a": 1 },
+						{ "px": [1184,352], "src": [160,32], "f": 0, "t": 37, "d": [499], "a": 1 }
 					],
 					"entityInstances": []
 				},
@@ -2160,15 +2159,17 @@
 						{ "px": [896,320], "src": [96,0], "f": 0, "t": 3, "d": [448], "a": 1 },
 						{ "px": [928,320], "src": [96,0], "f": 0, "t": 3, "d": [449], "a": 1 },
 						{ "px": [960,320], "src": [64,0], "f": 0, "t": 2, "d": [450], "a": 1 },
+						{ "px": [1056,320], "src": [0,0], "f": 0, "t": 0, "d": [453], "a": 1 },
+						{ "px": [1184,320], "src": [64,0], "f": 0, "t": 2, "d": [457], "a": 1 },
 						{ "px": [864,352], "src": [0,32], "f": 0, "t": 32, "d": [489], "a": 1 },
 						{ "px": [896,352], "src": [32,32], "f": 0, "t": 33, "d": [490], "a": 1 },
 						{ "px": [928,352], "src": [32,32], "f": 0, "t": 33, "d": [491], "a": 1 },
 						{ "px": [960,352], "src": [64,32], "f": 0, "t": 34, "d": [492], "a": 1 },
-						{ "px": [1056,352], "src": [32,0], "f": 0, "t": 1, "d": [495], "a": 1 },
-						{ "px": [1088,352], "src": [32,0], "f": 0, "t": 1, "d": [496], "a": 1 },
-						{ "px": [1120,352], "src": [32,0], "f": 0, "t": 1, "d": [497], "a": 1 },
-						{ "px": [1152,352], "src": [32,0], "f": 0, "t": 1, "d": [498], "a": 1 },
-						{ "px": [1184,352], "src": [32,0], "f": 0, "t": 1, "d": [499], "a": 1 }
+						{ "px": [1056,352], "src": [0,32], "f": 0, "t": 32, "d": [495], "a": 1 },
+						{ "px": [1088,352], "src": [32,32], "f": 0, "t": 33, "d": [496], "a": 1 },
+						{ "px": [1120,352], "src": [32,32], "f": 0, "t": 33, "d": [497], "a": 1 },
+						{ "px": [1152,352], "src": [32,32], "f": 0, "t": 33, "d": [498], "a": 1 },
+						{ "px": [1184,352], "src": [64,32], "f": 0, "t": 34, "d": [499], "a": 1 }
 					],
 					"entityInstances": []
 				},
@@ -2198,7 +2199,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "Sign",
-							"__grid": [11,8],
+							"__grid": [20,6],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
 							"__tile": { "tilesetUid": 3, "x": 224, "y": 32, "w": 32, "h": 32 },
@@ -2207,13 +2208,13 @@
 							"width": 32,
 							"height": 32,
 							"defUid": 90,
-							"px": [368,272],
+							"px": [656,208],
 							"fieldInstances": [{ "__identifier": "text", "__type": "Array<String>", "__value": ["Honey Suckle Township\n\nPopulation: 4"], "__tile": null, "defUid": 174, "realEditorValues": [{
 								"id": "V_String",
 								"params": ["Honey Suckle Township\\n\\nPopulation: 4"]
 							}] }],
-							"__worldX": 368,
-							"__worldY": 248
+							"__worldX": 656,
+							"__worldY": 184
 						},
 						{
 							"__identifier": "Door",
@@ -2247,7 +2248,7 @@
 						},
 						{
 							"__identifier": "MainCharacter",
-							"__grid": [32,12],
+							"__grid": [22,6],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
 							"__tile": null,
@@ -2256,10 +2257,10 @@
 							"width": 32,
 							"height": 32,
 							"defUid": 144,
-							"px": [1040,400],
+							"px": [720,208],
 							"fieldInstances": [],
-							"__worldX": 1040,
-							"__worldY": 376
+							"__worldX": 720,
+							"__worldY": 184
 						},
 						{
 							"__identifier": "BocceBallPlayer",
@@ -2278,17 +2279,38 @@
 									"id": "V_String",
 									"params": ["JEFF"]
 								}] },
-								{ "__identifier": "intro_talk", "__type": "Array<String>", "__value": ["Hey buddy.\nHaven't seen you around here."], "__tile": null, "defUid": 162, "realEditorValues": [{
+								{ "__identifier": "intro_talk", "__type": "Array<String>", "__value": [ "Hey buddy.\nHaven't seen you around here.\nYou new?", "You wanna play some Bocce?" ], "__tile": null, "defUid": 162, "realEditorValues": [ {
 									"id": "V_String",
-									"params": ["Hey buddy.\\nHaven't seen you around here."]
-								}] },
+									"params": ["Hey buddy.\\nHaven't seen you around here.\\nYou new?"]
+								}, {
+									"id": "V_String",
+									"params": ["You wanna play some Bocce?"]
+								} ] },
 								{ "__identifier": "on_player_win", "__type": "Array<String>", "__value": [], "__tile": null, "defUid": 163, "realEditorValues": [] },
 								{ "__identifier": "on_player_lose", "__type": "Array<String>", "__value": [], "__tile": null, "defUid": 164, "realEditorValues": [] },
-								{ "__identifier": "player_win_talk", "__type": "Array<String>", "__value": [], "__tile": null, "defUid": 165, "realEditorValues": [] },
-								{ "__identifier": "player_lose_talk", "__type": "Array<String>", "__value": [], "__tile": null, "defUid": 166, "realEditorValues": [] },
+								{ "__identifier": "player_win_talk", "__type": "Array<String>", "__value": ["Wow, you played great for\na first timer!"], "__tile": null, "defUid": 165, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Wow, you played great for\\na first timer!"]
+								}] },
+								{ "__identifier": "player_lose_talk", "__type": "Array<String>", "__value": [
+									"Eh, it happens.\nBetter luck next time!",
+									"I'll be here if you want\nto play again sometime."
+								], "__tile": null, "defUid": 166, "realEditorValues": [ {
+									"id": "V_String",
+									"params": ["Eh, it happens.\\nBetter luck next time!"]
+								}, {
+									"id": "V_String",
+									"params": ["I'll be here if you want\\nto play again sometime."]
+								} ] },
 								{ "__identifier": "to_play_conditional", "__type": "Array<String>", "__value": [], "__tile": null, "defUid": 167, "realEditorValues": [] },
-								{ "__identifier": "rematch_talk", "__type": "Array<String>", "__value": [], "__tile": null, "defUid": 168, "realEditorValues": [] },
-								{ "__identifier": "regular_talk", "__type": "Array<String>", "__value": [], "__tile": null, "defUid": 169, "realEditorValues": [] },
+								{ "__identifier": "rematch_talk", "__type": "Array<String>", "__value": ["Want a rematch?"], "__tile": null, "defUid": 168, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Want a rematch?"]
+								}] },
+								{ "__identifier": "regular_talk", "__type": "Array<String>", "__value": ["I think I may be\nable to beat you this time."], "__tile": null, "defUid": 169, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["I think I may be\\nable to beat you this time."]
+								}] },
 								{ "__identifier": "challenge_talk", "__type": "Array<String>", "__value": ["Wanna play some bocce?"], "__tile": null, "defUid": 173, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["Wanna play some bocce?"]
@@ -2419,7 +2441,7 @@
 						{ "px": [864,384], "src": [128,64], "f": 0, "t": 68, "d": [531], "a": 1 },
 						{ "px": [896,384], "src": [96,32], "f": 0, "t": 35, "d": [532], "a": 1 },
 						{ "px": [960,384], "src": [160,64], "f": 0, "t": 69, "d": [534], "a": 1 },
-						{ "px": [1056,384], "src": [96,32], "f": 0, "t": 35, "d": [537], "a": 1 },
+						{ "px": [1056,384], "src": [128,64], "f": 0, "t": 68, "d": [537], "a": 1 },
 						{ "px": [1120,384], "src": [96,32], "f": 0, "t": 35, "d": [539], "a": 1 },
 						{ "px": [1152,384], "src": [96,32], "f": 0, "t": 35, "d": [540], "a": 1 },
 						{ "px": [1184,384], "src": [160,64], "f": 0, "t": 69, "d": [541], "a": 1 }

@@ -88,12 +88,10 @@ function Ball:update()
 	self.ball_x = self.x + self.width / 2
 	self.ball_y = self.y + self.height - self.diameter
 	for i = 1, number_of_collisions do
-		print("collision")
 		local collision = collisions[i]
 		local collided_sprite = collision.other
 		local collision_normal = collision.normal
 		local collision_tag = collided_sprite:getTag()
-		print("collision")
 		if collision_tag == COLLIDER_TAGS.BALL then
 			self:collides_with(collided_sprite)
 		elseif collision_tag == COLLIDER_TAGS.OBSTACLE then
