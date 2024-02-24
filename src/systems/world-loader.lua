@@ -116,11 +116,13 @@ function WorldLoaderSystem:init()
 	self.world = {}
 	self.entities = {}
 	self.levels = {}
-	parse_world(self, PATH .. "world.ldtk")
 	self:register_events(WorldLoaderSystem.EVENTS)
 end
 
 function WorldLoaderSystem:load(level_id)
+	MemoryPrinter:log("WorldLoader.before_parse")
+	parse_world(self, PATH .. "world.ldtk")
+	MemoryPrinter:log("WorldLoader.after_parse")
 	if self.loaded_level_id == level_id then
 		return self.loaded_level_id
 	end
@@ -137,6 +139,11 @@ function WorldLoaderSystem:load(level_id)
 	for _, entity in ipairs(level.entities) do
 		self:publish(WorldLoaderSystem.EVENTS.LOAD_ENTITY, entity)
 	end
+	MemoryPrinter:log("WorldLoader.after_load")
+	self.world = {}
+	self.entities = {}
+	self.levels = {}
+	MemoryPrinter:log("WorldLoader.after_purge")
 	return self.loaded_level_id
 end
 

@@ -16,9 +16,7 @@ function DialogueSystem:init()
 	self:moveTo(0, 0)
 	self:setIgnoresDrawOffset(true)
 	self:setZIndex(Z_INDEXES.DIALOGUE)
-	self:setVisible(false)
 	self.border = gfx.nineSlice.new("images/dialogue-nine-slice", 32, 32, 32, 32)
-	self:add()
 end
 
 local function next_message(self)
@@ -28,7 +26,6 @@ end
 function DialogueSystem:update()
 	if self.current then
 		self:markDirty()
-		self:setVisible(true)
 		if self.current.needs_decision then
 			if playdate.buttonJustReleased(playdate.kButtonUp) or playdate.buttonJustReleased(playdate.kButtonDown) then
 				self.current.accept = not self.current.accept
@@ -55,17 +52,17 @@ function DialogueSystem:update()
 		end
 	elseif self.dialogue[1] then
 		next_message(self)
-	else
-		self:setVisible(false)
 	end
 end
 
 function DialogueSystem:purge()
+	self:remove()
 	self.current = nil
 	self.dialogue = {}
 end
 
 function DialogueSystem:queue(payload, on_end, on_accept, on_reject)
+	self:add()
 	assert(payload.text)
 	local texts = payload.text
 	for i, text in ipairs(texts) do

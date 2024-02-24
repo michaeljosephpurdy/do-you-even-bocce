@@ -17,6 +17,8 @@ end
 import("CoreLibs/sprites")
 import("CoreLibs/timer")
 import("CoreLibs/ui")
+-- plugins
+import("plugins/memory-printer")
 -- mixins
 import("mixins/with-player")
 import("mixins/trigger-by-player")
@@ -89,4 +91,5 @@ function playdate.update()
 	DELTA_TIME = playdate.getElapsedTime()
 	playdate.resetElapsedTime()
 	SceneManagerSingleton:update()
+	playdate.drawFPS(5, 225)
 end
