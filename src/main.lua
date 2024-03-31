@@ -4,6 +4,7 @@ import("CoreLibs/graphics")
 import("CoreLibs/math")
 import("CoreLibs/nineslice")
 import("CoreLibs/object")
+import("CoreLibs/utilities/sampler")
 -- add mixin support to CoreLibs/object
 function Object:implements(...)
 	for _, cls in pairs({ ... }) do
@@ -55,6 +56,7 @@ import("entities/bocce-game/controllable-player")
 import("entities/bocce-game/ai-player")
 import("entities/overworld/controllable-player")
 import("entities/overworld/bocce-ball-player")
+import("entities/overworld/background-detector")
 import("entities/icon")
 import("entities/door")
 import("entities/sign")
@@ -67,23 +69,32 @@ Z_INDEXES = {
 	METERS = 32740,
 }
 COLLIDER_TAGS = {
+	NO_OP = 0,
 	PLAYER = 1,
 	OBSTACLE = 2,
 	TRIGGER = 3,
 	BALL = 4,
 }
+COLLIDER_GROUPS = {
+	PLAYER = 1,
+	SOLID = 2,
+}
+GAME_SIZE = {
+	WIDTH = 400,
+	HEIGHT = 240,
+}
 function init()
 	WorldLoaderSingleton = WorldLoaderSystem()
-	SpriteManagerSingleton = SpriteManager()
+	SpriteManagerSingleton = SpriteManager({ tile_size = 32 })
 	SceneManagerSingleton = SceneManager()
 	TileMapManagerSingleton = TileMapManager()
 	CameraSingleton = CameraSystem()
 	ScreenTransitionSingleton = ScreenTransitionSystem()
 	DialogueSystemSingleton = DialogueSystem()
-	SceneManagerSingleton:add_state(BocceGameScene())
-	SceneManagerSingleton:add_state(OverworldScene())
-	--SceneManagerSingleton:next_state(BocceGameScene)
-	SceneManagerSingleton:next_state(OverworldScene)
+	SceneManagerSingleton:add_scene(BocceGameScene())
+	SceneManagerSingleton:add_scene(OverworldScene())
+	--SceneManagerSingleton:next_scene(BocceGameScene)
+	SceneManagerSingleton:next_scene(OverworldScene)
 end
 init()
 

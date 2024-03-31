@@ -12,7 +12,7 @@ function OverworldBocceBallPlayer:init(props)
 	OverworldBocceBallPlayer.super.init(self, type, props.level_id)
 	local x, y = props.x, props.y
 	self:moveTo(x, y)
-	self:setCollideRect(-8, self.height - self.height / 2, self.width + 16, self.height / 2)
+	self:setCollideRect(-8, self.height - self.height / 2, self.width + 16, self.height)
 	self.icon = SpeakIcon(x - self.width, y - self.height)
 	self.icon:setZIndex(Z_INDEXES.ICONS)
 	self.icon:add()
@@ -85,7 +85,7 @@ function OverworldBocceBallPlayer:trigger(other)
 		other.lock_controls = false
 		self.triggered = false
 	end, function()
-		SceneManagerSingleton:next_state(BocceGameScene)
+		SceneManagerSingleton:next_scene(BocceGameScene)
 		self.games_played = self.games_played + 1
 	end)
 end

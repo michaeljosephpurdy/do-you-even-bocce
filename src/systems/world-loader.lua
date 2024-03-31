@@ -22,6 +22,10 @@ local function decode_json(file_path)
 end
 
 local function parse_level(level_data)
+	local neighbor_uids = {}
+	for _, neighbor in pairs(level_data.__neighbours) do
+		table.insert(neighbor_uids, neighbor.levelIid)
+	end
 	return {
 		uid = level_data.iid,
 		id = level_data.identifier,
@@ -33,13 +37,15 @@ local function parse_level(level_data)
 		yy = level_data.worldY + level_data.pxHei,
 		tiles = {},
 		entities = {},
+		layers = {},
+		neighbor_uids = neighbor_uids,
 	}
 end
 
 local function parse_tile(level, layer, tile)
 	local collider = false
 	local z_index = -layer.z_index
-	if layer.__identifier:sub(-6) == "_Upper" then
+	if layer.__identifier == "Upper" then
 		z_index = z_index + 100
 	end
 	if layer.__identifier:sub(-9) == "_Collider" then
@@ -54,6 +60,28 @@ local function parse_tile(level, layer, tile)
 		img_x = tile.src[1],
 		img_y = tile.src[2],
 		collider = collider,
+	}
+end
+
+local function parse_layer(level, layer)
+	local png = string.format("%s/world/png/%s.png", PATH, level.id)
+	local z_index = 0
+	if layer then
+		-- layer png path is like this: data/tilemap/world/png/Level_0__Grass.png
+		png = string.format("%s/world/png/%s__%s.png", PATH, level.id, layer.__identifier)
+		z_index = layer.z_index
+		if layer.__identifier == "Upper" then
+			z_index = z_index + level.yy
+		end
+	end
+	return {
+		bg = layer == nil,
+		x = level.x,
+		y = level.y,
+		z_index = z_index,
+		image_source = png,
+		level_id = level.id,
+		level_uid = level.uid,
 	}
 end
 
@@ -86,13 +114,22 @@ local function parse_world(self, file_path)
 	self.world = {
 		levels = {},
 	}
+	-- first, parse the json
 	local world_data = decode_json(world_file)
+	-- then, loop through all 'levels' and store
+	-- levels, layers, tiles, entities, etc in ram
+	-- *this is not the same as instantiating these objects*
 	for _, level_data in pairs(world_data.levels) do
 		local level = parse_level(level_data)
 		self.levels[level.uid] = level
 		self.world.levels[level.id] = level
+		local top_layer = #level_data.layerInstances
+		table.insert(level.layers, parse_layer(level))
 		for i, layer in ipairs(level_data.layerInstances) do
-			layer.z_index = i
+			layer.z_index = top_layer - i
+			if layer.__identifier == "Upper" and (layer.__type == "Tiles" or layer.__type == "AutoLayer") then
+				table.insert(level.layers, parse_layer(level, layer))
+			end
 			if layer.autoLayerTiles then
 				for _, tile in pairs(layer.autoLayerTiles) do
 					table.insert(level.tiles, parse_tile(level, layer, tile))
@@ -110,6 +147,18 @@ local function parse_world(self, file_path)
 			end
 		end
 	end
+	-- after all levels have been parsed,
+	-- we need to loop through one more time to tie all of the
+	-- neighboring levels with eachother
+	for _, level in pairs(self.levels) do
+		if #level.neighbor_uids > 0 then
+			level.neighbors = {}
+		end
+		for _, neighbor_uid in pairs(level.neighbor_uids) do
+			table.insert(level.neighbors, self.levels[neighbor_uid])
+		end
+	end
+	MemoryPrinter:log("world loaded")
 end
 
 function WorldLoaderSystem:init()
@@ -133,6 +182,16 @@ function WorldLoaderSystem:load(level_id)
 	end
 	self.loaded_level_id = level.uid
 	self:publish(WorldLoaderSystem.EVENTS.LOAD_LEVEL, level)
+	if level.neighbors then
+		for _, neighbor in ipairs(level.neighbors) do
+			for _, layer in ipairs(neighbor.layers) do
+				self:publish(WorldLoaderSystem.EVENTS.LOAD_LAYER, layer)
+			end
+		end
+	end
+	for _, layer in ipairs(level.layers) do
+		self:publish(WorldLoaderSystem.EVENTS.LOAD_LAYER, layer)
+	end
 	for _, tile in ipairs(level.tiles) do
 		self:publish(WorldLoaderSystem.EVENTS.LOAD_TILE, tile)
 	end

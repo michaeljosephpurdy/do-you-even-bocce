@@ -28,4 +28,6 @@ function BasePlayer:init(type, level_id)
 	end
 	self:setImage(self.sprite_sheet)
 	self:setTag(COLLIDER_TAGS.TRIGGER)
+	self:setGroups({ COLLIDER_TAGS.TRIGGER })
+	self:setCollidesWithGroups({ COLLIDER_TAGS.PLAYER })
 end

@@ -39,6 +39,7 @@ function DialogueSystem:update()
 				if self.current.on_end then
 					self.current.on_end()
 				end
+				self:purge()
 			end
 			next_message(self)
 		elseif playdate.buttonJustReleased(playdate.kButtonB) then

@@ -13,4 +13,5 @@ function BaseTile:init(props)
 	self:setZIndex(y + (z_index_offset or 0))
 	self.level_id = level_id
 	self:setUpdatesEnabled(false)
+	self:setCollisionsEnabled(false)
 end

@@ -8,6 +8,8 @@ function Sign:init(props)
 	self:setup_icon(ReadIcon, x - self.width / 2, y - self.height / 2)
 	self:setTag(COLLIDER_TAGS.TRIGGER)
 	self:setCollideRect(0, self.height / 2, self.width, self.height)
+	self:setGroups({ COLLIDER_TAGS.TRIGGER })
+	self:setCollidesWithGroups({ COLLIDER_TAGS.PLAYER })
 	self.props = props
 end
 

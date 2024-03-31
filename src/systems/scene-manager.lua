@@ -2,43 +2,43 @@ class("SceneManager").extends()
 SceneManager.singleton = true
 
 function SceneManager:init()
-	self.states = {}
-	self.state = nil
-	self.previous_state = nil
+	self.scenes = {}
+	self.scene = nil
+	self.previous_scene = nil
 end
 
-function SceneManager:add_state(state_object)
+function SceneManager:add_scene(scene_object)
 	assert(
-		state_object:isa(BaseScene),
-		"Only instances of BaseScene can be added to SceneManager" .. tostring(state_object)
+		scene_object:isa(BaseScene),
+		"Only instances of BaseScene can be added to SceneManager" .. tostring(scene_object)
 	)
-	for _, existing_state in pairs(self.states) do
-		assert(not existing_state:isa(state_object), "BaseScene objects should be singletons")
+	for _, existing_scene in pairs(self.scenes) do
+		assert(not existing_scene:isa(scene_object), "BaseScene objects should be singletons")
 	end
-	table.insert(self.states, state_object)
+	table.insert(self.scenes, scene_object)
 end
 
 function SceneManager:update()
-	self.state:update()
+	self.scene:update()
 end
 
-function SceneManager:next_state(state)
+function SceneManager:next_scene(scene)
 	local found = false
-	for _, existing_state in pairs(self.states) do
-		if existing_state.className == state.className then
-			state = existing_state
+	for _, existing_scene in pairs(self.scenes) do
+		if existing_scene.className == scene.className then
+			scene = existing_scene
 			found = true
 		end
 	end
-	assert(found, "cannot transition to unknown state: " .. state.className)
-	self.previous_state = self.state
+	assert(found, "cannot transition to unknown scene: " .. scene.className)
+	self.previous_scene = self.scene
 	local payload = {}
-	if self.previous_state then
-		payload = self.previous_state:build_payload()
-		payload.source = self.previous_state
-		self.previous_state:destroy()
+	if self.previous_scene then
+		payload = self.previous_scene:build_payload()
+		payload.source = self.previous_scene
+		self.previous_scene:destroy()
 	end
-	self.state = state
-	self.state:setup(payload)
-	print("SceneManager transitioned to " .. self.state.className)
+	self.scene = scene
+	self.scene:setup(payload)
+	print("SceneManager transitioned to " .. self.scene.className)
 end
