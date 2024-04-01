@@ -63,9 +63,9 @@ local function parse_tile(level, layer, tile)
 	}
 end
 
-local function parse_layer(level, layer)
+local function parse_layer(level, layer, index)
 	local png = string.format("%s/world/png/%s.png", PATH, level.id)
-	local z_index = 0
+	local z_index = level.y
 	if layer then
 		-- layer png path is like this: data/tilemap/world/png/Level_0__Grass.png
 		png = string.format("%s/world/png/%s__%s.png", PATH, level.id, layer.__identifier)

@@ -7,4 +7,6 @@ function ColliderTile:init(payload)
 	self:setGroups({ COLLIDER_TAGS.OBSTACLE })
 	self:setCollidesWithGroups({ COLLIDER_TAGS.PLAYER })
 	self:setCollisionsEnabled(true)
+	-- we actually don't want to draw collider tiles, so we'll just set image to nil
+	self:setImage(nil)
 end

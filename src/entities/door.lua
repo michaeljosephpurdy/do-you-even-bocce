@@ -13,7 +13,7 @@ function Door:init(props)
 	if props.exit then
 		self:setup_icon(ExitIcon, x - self.width / 2, y - self.height / 2)
 	else
-		self:setup_icon(EnterIcon, x - self.width / 2, y - self.height / 2)
+		self:setup_icon(EnterIcon, x - self.width / 2, y - self.height)
 	end
 	-- doors must go to somewhere
 	assert(props.travel_to, "invalid door at (world position) x: " .. x .. " y: " .. y)

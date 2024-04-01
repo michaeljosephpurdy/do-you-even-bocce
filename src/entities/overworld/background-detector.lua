@@ -10,7 +10,7 @@ function BackgroundDetector:init(target)
 	self.target = target
 	self:moveTo(0, 0)
 	self:setSize(1, 1)
-	self:setCollideRect(0, 16, self.width, self.height)
+	self:setCollideRect(0, 14, self.width, self.height)
 	self:setCenter(0, 0)
 	self:setUpdatesEnabled(true)
 	self:setCollisionsEnabled(true)

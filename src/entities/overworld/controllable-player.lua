@@ -6,12 +6,12 @@ function OverworldControllablePlayer:init(props)
 	local x, y = props.x, props.y
 	self:setTag(COLLIDER_TAGS.PLAYER)
 	self:setGroups({ COLLIDER_TAGS.PLAYER })
-	self:setCollidesWithGroups({ COLLIDER_TAGS.BACKGROUND, COLLIDER_TAGS.OBSTACLE, COLLIDER_TAGS.TRIGGER })
+	self:setCollidesWithGroups({ COLLIDER_TAGS.OBSTACLE, COLLIDER_TAGS.TRIGGER })
 	self:moveTo(x, y)
 	self:setZIndex(2)
 	self:setCollideRect(6, self.height - self.height / 4, self.width - 12, self.height / 4)
 	CameraSingleton:target_sprite_centered(self, 5)
-	self.speed = 5
+	self.speed = 3
 	self.background_detector = BackgroundDetector(self)
 end
 
