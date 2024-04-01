@@ -2,12 +2,46 @@ local sprite_class <const> = playdate.graphics.sprite
 class("SpriteManager").extends()
 SpriteManager.singleton = true
 
-function SpriteManager:init()
+function SpriteManager:init(props)
 	assert(not SpriteManager.instance, "SpriteManager is a singleton, only one should exist")
 	SpriteManager.instance = self
 	self.sprites_by_levels = {}
+	self.tile_size = props.tile_size or 32
+	self.update_width = props.update_width or 10
+	self.update_height = props.update_height or 5
+	self.sprite_marker_coroutine = coroutine.create(function() end)
 end
 
+local function sprite_marker_coroutine(self, level_id)
+	return coroutine.create(function()
+		local sprites = self.sprites_by_levels[level_id]
+		local i = 1
+		while i <= #sprites do
+			local lower_bound_x = self.target_x - self.update_width * self.tile_size
+			local upper_bound_x = self.target_x + self.update_width * self.tile_size
+			local lower_bound_y = self.target_y - self.update_height * self.tile_size
+			local upper_bound_y = self.target_y + self.update_height * self.tile_size
+			local sprite = sprites[i]
+			if
+				sprite.x >= lower_bound_x
+				and sprite.x <= upper_bound_x
+				and sprite.y >= lower_bound_y
+				and sprite.y <= upper_bound_y
+			then
+				sprite:add()
+			else
+				sprite:remove()
+			end
+			i = i + 1
+			if i % 4 == 0 then
+				coroutine.yield()
+			end
+			if i > #sprites then
+				i = 1
+			end
+		end
+	end)
+end
 function SpriteManager:disable(entity)
 	entity:remove()
 end
@@ -43,12 +77,14 @@ function SpriteManager:add(sprite)
 end
 
 function SpriteManager:purge_level(level_id)
-	for _, sprite in ipairs(self.sprites_by_levels[level_id]) do
-		if sprite.level_id == level_id then
-			sprite:remove()
+	sample("purge_level", function()
+		for _, sprite in ipairs(self.sprites_by_levels[level_id] or {}) do
+			if sprite.level_id == level_id then
+				sprite:remove()
+			end
 		end
-	end
-	self.sprites_by_levels[level_id] = {}
+		self.sprites_by_levels[level_id] = {}
+	end)
 end
 
 function SpriteManager:remove(entity, i)
@@ -72,6 +108,16 @@ end
 
 function SpriteManager:update()
 	sprite_class.update()
+	coroutine.resume(self.sprite_marker_coroutine)
+end
+
+function SpriteManager:calculate_visible(level_id, x, y)
+	self.target_x = x
+	self.target_y = y
+	local status = coroutine.status(self.sprite_marker_coroutine)
+	if status == "dead" then
+		self.sprite_marker_coroutine = sprite_marker_coroutine(self, level_id)
+	end
 end
 
 function SpriteManager:count()

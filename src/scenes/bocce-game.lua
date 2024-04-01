@@ -64,7 +64,7 @@ function BocceGameScene:update()
 		end
 	elseif self.state == STATES.EXITING then
 		CameraSingleton:target_between_sprites_centered(self.ai_player, self.controllable_player)
-		SceneManagerSingleton:next_state(OverworldScene)
+		SceneManagerSingleton:next_scene(OverworldScene)
 	end
 	CameraSingleton:update()
 	playdate.timer.updateTimers()

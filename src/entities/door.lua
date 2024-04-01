@@ -7,11 +7,13 @@ function Door:init(props)
 	Door.super.init(self, x, y, "images/door", props.level_id)
 	self:setTag(COLLIDER_TAGS.TRIGGER)
 	self:setCollideRect(props.trigger_offset_x, props.trigger_offset_y, self.width, self.height)
+	self:setGroups({ COLLIDER_TAGS.TRIGGER })
+	self:setCollidesWithGroups({ COLLIDER_TAGS.PLAYER })
 	self:fix_draw_order()
 	if props.exit then
 		self:setup_icon(ExitIcon, x - self.width / 2, y - self.height / 2)
 	else
-		self:setup_icon(EnterIcon, x - self.width / 2, y - self.height / 2)
+		self:setup_icon(EnterIcon, x - self.width / 2, y - self.height)
 	end
 	-- doors must go to somewhere
 	assert(props.travel_to, "invalid door at (world position) x: " .. x .. " y: " .. y)
@@ -40,11 +42,10 @@ function Door:trigger(other)
 	print("leaving  " .. self.level_id)
 	other.lock_controls = true
 	ScreenTransitionSingleton:start(function()
-		other.level_id = self.linked_level_uid
-		other:moveTo(self.linked_x, self.linked_y)
+		other:transition(self.linked_level_uid, self.linked_x, self.linked_y)
 		WorldLoaderSingleton:load(self.linked_level_uid)
-		CameraSingleton:target_sprite_centered(other, 0)
 		SpriteManagerSingleton:purge_level(self.level_id)
 		other.lock_controls = false
+		CameraSingleton:target_sprite_centered(other, 0)
 	end)
 end

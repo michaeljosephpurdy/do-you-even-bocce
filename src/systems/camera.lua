@@ -4,6 +4,7 @@ local setDrawOffset <const> = playdate.graphics.setDrawOffset
 class("CameraSystem").extends()
 
 function CameraSystem:init()
+	self.lerp_factor = 1
 	self.x = 0
 	self.y = 0
 	self.target_x = 0
@@ -18,6 +19,13 @@ function CameraSystem:init()
 		self.min_y = payload.y
 		self.max_y = payload.yy
 	end)
+end
+
+function CameraSystem:set_boundaries(x, xx, y, yy)
+	self.min_x = x
+	self.max_x = xx
+	self.min_y = y
+	self.max_y = yy
 end
 
 function CameraSystem:update()
